@@ -2,87 +2,112 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ASZ Asten · Terminal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ----- Terminal Style (Groß, Touch-optimiert) ----- */
+        /* ----- Reset & Base ----- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
         body {
             background: #0a1a24;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 12px;
             min-height: 100vh;
-            padding: 16px;
+            min-height: 100dvh;
         }
+
+        /* ----- Terminal Container ----- */
         .terminal {
-            max-width: 1400px;
+            max-width: 1440px;
             width: 100%;
+            height: 98vh;
+            height: 98dvh;
+            max-height: 900px;
             background: #0f212e;
-            border-radius: 32px;
+            border-radius: 28px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
-            padding: 24px 28px 30px;
+            padding: clamp(12px, 2vw, 28px);
             border: 1px solid #1f3a4a;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        /* Header */
+
+        /* ----- Header ----- */
         .terminal-header {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
             border-bottom: 2px solid #1f3a4a;
-            padding-bottom: 16px;
-            margin-bottom: 22px;
+            padding-bottom: clamp(10px, 1.5vh, 18px);
+            margin-bottom: clamp(10px, 1.5vh, 20px);
+            flex-shrink: 0;
         }
         .terminal-title {
             display: flex;
             align-items: baseline;
-            gap: 14px;
+            gap: clamp(8px, 1.5vw, 18px);
             flex-wrap: wrap;
         }
         .terminal-title h1 {
             font-weight: 700;
-            font-size: 2.2rem;
+            font-size: clamp(1.2rem, 3vw, 2.2rem);
             letter-spacing: -0.5px;
             color: #8bc1e0;
             text-shadow: 0 0 20px rgba(80, 180, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-title h1 i {
+            color: #3a8aaf;
+            font-size: clamp(1rem, 2vw, 1.6rem);
         }
         .terminal-title .badge {
             background: #1f5d7a;
             color: #cde5f5;
-            padding: 6px 22px;
+            padding: 4px clamp(10px, 1.5vw, 22px);
             border-radius: 60px;
-            font-size: 1.1rem;
+            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
             font-weight: 600;
-            letter-spacing: 0.5px;
             border: 1px solid #3a7a9a;
+            white-space: nowrap;
         }
         .terminal-status {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: clamp(8px, 1.5vw, 20px);
+            flex-wrap: wrap;
         }
         .status-led {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: #7aabca;
-            font-size: 0.95rem;
+            font-size: clamp(0.7rem, 1vw, 0.95rem);
             font-weight: 500;
         }
         .status-led .dot {
-            width: 14px;
-            height: 14px;
+            width: clamp(10px, 1.2vw, 14px);
+            height: clamp(10px, 1.2vw, 14px);
             border-radius: 50%;
             background: #2ecc71;
             box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
             animation: pulse 2s infinite;
+            flex-shrink: 0;
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -92,64 +117,75 @@
             background: #1f5d7a;
             color: white;
             border: none;
-            padding: 12px 32px;
+            padding: clamp(8px, 1.2vh, 14px) clamp(16px, 2.5vw, 32px);
             border-radius: 60px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: clamp(0.75rem, 1.2vw, 1.1rem);
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: clamp(6px, 1vw, 12px);
             cursor: pointer;
             transition: 0.2s;
             border: 1px solid #3a8aaf;
             box-shadow: 0 4px 15px rgba(31, 93, 122, 0.3);
+            white-space: nowrap;
+            touch-action: manipulation;
         }
         .report-btn:hover {
             background: #0f435c;
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(31, 93, 122, 0.5);
+        }
+        .report-btn:active {
+            transform: scale(0.97);
         }
         .report-btn i {
-            font-size: 1.3rem;
+            font-size: clamp(0.9rem, 1.2vw, 1.3rem);
         }
 
-        /* Main Grid */
+        /* ----- Main Grid (flexible) ----- */
         .terminal-grid {
             display: flex;
             flex-direction: row;
-            flex-wrap: wrap;
-            gap: 24px;
+            gap: clamp(12px, 2vw, 24px);
+            flex: 1;
+            min-height: 0;
         }
-        /* Linke Seite: Materialauswahl (größer für Touch) */
+
+        /* ----- Material Panel ----- */
         .material-panel {
             flex: 2.4;
-            min-width: 440px;
+            min-width: 0;
             background: rgba(255,255,255,0.03);
-            border-radius: 20px;
-            padding: 18px 18px 14px;
+            border-radius: clamp(14px, 2vw, 20px);
+            padding: clamp(10px, 1.5vw, 18px);
             border: 1px solid #1f3a4a;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px 16px;
-            margin-bottom: 16px;
+            gap: clamp(6px, 1vw, 14px);
+            margin-bottom: clamp(10px, 1.5vh, 16px);
             background: rgba(255,255,255,0.04);
-            padding: 12px 18px;
+            padding: clamp(8px, 1vw, 14px) clamp(12px, 1.5vw, 18px);
             border-radius: 60px;
             border: 1px solid #1f3a4a;
+            flex-shrink: 0;
         }
         .filter-bar input {
             flex: 2;
-            min-width: 180px;
+            min-width: 120px;
             border: none;
             background: rgba(255,255,255,0.08);
-            padding: 14px 20px;
+            padding: clamp(8px, 1.2vh, 14px) clamp(14px, 2vw, 20px);
             border-radius: 40px;
-            font-size: 1.1rem;
+            font-size: clamp(0.85rem, 1.2vw, 1.1rem);
             color: #e0edf5;
             border: 1px solid #2a4a5a;
             transition: 0.15s;
+            touch-action: manipulation;
         }
         .filter-bar input:focus {
             outline: none;
@@ -164,23 +200,25 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 6px 10px;
+            gap: clamp(4px, 0.6vw, 10px);
         }
         .block-selector span {
             font-weight: 600;
             color: #7aabca;
-            font-size: 0.95rem;
+            font-size: clamp(0.7rem, 0.9vw, 0.95rem);
         }
         .block-btn {
             background: transparent;
             border: 1px solid #2a4a5a;
-            padding: 8px 18px;
+            padding: clamp(4px, 0.6vh, 8px) clamp(10px, 1.2vw, 18px);
             border-radius: 40px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: clamp(0.65rem, 0.8vw, 0.9rem);
             cursor: pointer;
             transition: 0.15s;
             color: #8ab0c8;
+            touch-action: manipulation;
+            white-space: nowrap;
         }
         .block-btn.active {
             background: #1f5d7a;
@@ -188,30 +226,34 @@
             color: white;
             box-shadow: 0 0 15px rgba(31, 93, 122, 0.3);
         }
-        .block-btn:hover {
+        .block-btn:hover:not(.active) {
             background: #1a3a4a;
         }
-        .block-btn.active:hover {
-            background: #174b63;
+        .block-btn:active {
+            transform: scale(0.95);
         }
 
         .material-list {
-            max-height: 440px;
+            flex: 1;
             overflow-y: auto;
             padding-right: 4px;
-            margin-top: 6px;
+            margin-top: 4px;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
         }
         .material-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 16px 14px 22px;
-            margin-bottom: 6px;
+            gap: clamp(6px, 1vw, 12px);
+            padding: clamp(10px, 1.2vh, 16px) clamp(12px, 1.5vw, 18px) clamp(10px, 1.2vh, 16px) clamp(14px, 2vw, 22px);
+            margin-bottom: clamp(4px, 0.5vh, 6px);
             background: rgba(255,255,255,0.05);
             border-radius: 60px;
             border: 1px solid #1f3a4a;
             transition: 0.15s;
             cursor: default;
+            flex-wrap: wrap;
         }
         .material-item:hover {
             background: rgba(255,255,255,0.08);
@@ -220,146 +262,176 @@
         .material-item .code {
             font-weight: 700;
             color: #7ac0e0;
-            min-width: 64px;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.3vw, 1.2rem);
+            flex-shrink: 0;
+            min-width: 50px;
         }
         .material-item .desc {
             flex: 1;
-            margin: 0 14px 0 8px;
+            margin: 0 clamp(6px, 1vw, 14px) 0 clamp(4px, 0.6vw, 8px);
             font-weight: 500;
             color: #c8dce8;
-            font-size: 1.05rem;
+            font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+            min-width: 80px;
         }
         .material-item .container-badge {
             background: rgba(31, 93, 122, 0.3);
-            padding: 4px 18px;
+            padding: 2px clamp(10px, 1.2vw, 18px);
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: clamp(0.65rem, 0.8vw, 0.85rem);
             font-weight: 600;
             color: #8ac0da;
             border: 1px solid #2a5a6a;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .add-btn {
             background: rgba(31, 93, 122, 0.3);
             border: 1px solid #2a5a6a;
             border-radius: 40px;
-            padding: 10px 24px;
+            padding: clamp(6px, 0.8vh, 10px) clamp(14px, 1.8vw, 24px);
             font-weight: 700;
             color: #8ac0da;
             cursor: pointer;
             transition: 0.15s;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 1vw, 1rem);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: clamp(4px, 0.6vw, 10px);
+            touch-action: manipulation;
+            flex-shrink: 0;
         }
         .add-btn:hover:not(:disabled) {
             background: rgba(31, 93, 122, 0.5);
             border-color: #3a8aaf;
             color: white;
         }
+        .add-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
         .add-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
         }
-        .add-btn i {
-            font-size: 0.9rem;
-        }
 
-        /* Rechte Seite: Frachtliste + Karteikärtchen */
+        /* ----- Basket Panel ----- */
         .basket-panel {
             flex: 1.4;
-            min-width: 320px;
+            min-width: 0;
             background: rgba(255,255,255,0.03);
-            border-radius: 20px;
-            padding: 18px 18px 16px;
+            border-radius: clamp(14px, 2vw, 20px);
+            padding: clamp(10px, 1.5vw, 18px);
             border: 1px solid #1f3a4a;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         .basket-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #1f3a4a;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
+            padding-bottom: clamp(8px, 1vh, 12px);
+            margin-bottom: clamp(8px, 1vh, 12px);
+            flex-shrink: 0;
         }
         .basket-header h3 {
             font-weight: 600;
             color: #8bc1e0;
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 1.5vw, 1.3rem);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .basket-header h3 i {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
         }
         .basket-header span {
             background: #1f5d7a;
             color: white;
             border-radius: 40px;
-            padding: 0 18px;
+            padding: 0 clamp(12px, 1.5vw, 18px);
             font-weight: 700;
-            font-size: 1.1rem;
-            line-height: 34px;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            line-height: clamp(28px, 3.5vh, 34px);
             border: 1px solid #3a8aaf;
+            flex-shrink: 0;
         }
         .basket-list {
-            flex: 1;
+            flex: 0 1 auto;
             overflow-y: auto;
-            margin: 6px 0 12px;
-            padding-right: 6px;
-            max-height: 160px;
+            margin-bottom: clamp(8px, 1vh, 12px);
+            padding-right: 4px;
+            max-height: 30vh;
+            min-height: 40px;
+            -webkit-overflow-scrolling: touch;
         }
         .basket-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 8px 10px 16px;
+            gap: clamp(4px, 0.6vw, 10px);
+            padding: clamp(6px, 0.8vh, 10px) clamp(6px, 0.8vw, 10px) clamp(6px, 0.8vh, 10px) clamp(12px, 1.5vw, 16px);
             background: rgba(255,255,255,0.05);
             border-radius: 40px;
-            margin-bottom: 5px;
+            margin-bottom: clamp(3px, 0.4vh, 5px);
             border: 1px solid #1f3a4a;
-            font-size: 0.95rem;
+            font-size: clamp(0.8rem, 0.9vw, 0.95rem);
         }
         .basket-item .b-code {
             font-weight: 700;
             color: #7ac0e0;
-            min-width: 54px;
+            flex-shrink: 0;
+            min-width: 44px;
+            font-size: clamp(0.85rem, 1vw, 1rem);
         }
         .basket-item .b-desc {
             flex: 1;
-            margin: 0 10px;
+            margin: 0 clamp(4px, 0.6vw, 10px);
             font-weight: 500;
             color: #b8d0dc;
+            font-size: clamp(0.75rem, 0.85vw, 0.9rem);
+            min-width: 50px;
         }
         .basket-item .b-container {
             background: rgba(31, 93, 122, 0.2);
-            padding: 2px 16px;
+            padding: 1px clamp(8px, 1vw, 16px);
             border-radius: 30px;
-            font-size: 0.75rem;
+            font-size: clamp(0.6rem, 0.7vw, 0.75rem);
             font-weight: 600;
             color: #8ac0da;
             border: 1px solid #1f4a5a;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .remove-btn {
             background: none;
             border: none;
             color: #6a8a9a;
             cursor: pointer;
-            font-size: 1.3rem;
-            padding: 0 8px;
+            font-size: clamp(1rem, 1.2vw, 1.3rem);
+            padding: 0 clamp(4px, 0.6vw, 8px);
             transition: 0.15s;
+            touch-action: manipulation;
+            flex-shrink: 0;
         }
         .remove-btn:hover {
             color: #e06666;
         }
+        .remove-btn:active {
+            transform: scale(0.85);
+        }
 
-        /* Karteikärtchen Stack - Terminal Style */
+        /* ----- Card Stack ----- */
         .card-stack-container {
             position: relative;
-            margin: 10px 0 6px;
-            height: 220px;
+            margin: clamp(6px, 0.8vh, 12px) 0 clamp(4px, 0.5vh, 8px);
+            height: clamp(160px, 25vh, 230px);
+            min-height: 120px;
             perspective: 1000px;
             touch-action: pan-y;
             cursor: grab;
+            flex-shrink: 0;
         }
         .card-stack-container:active {
             cursor: grabbing;
@@ -377,11 +449,11 @@
             height: 100%;
             background: #0f212e;
             border: 2.5px solid #2a5a6a;
-            border-radius: 18px;
-            padding: 20px 24px;
+            border-radius: clamp(14px, 2vw, 18px);
+            padding: clamp(12px, 2vw, 22px) clamp(14px, 2.5vw, 26px);
             font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
-            line-height: 2;
+            font-size: clamp(0.75rem, 1vw, 0.95rem);
+            line-height: 1.8;
             color: #c8dce8;
             text-align: right;
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, box-shadow 0.3s ease;
@@ -393,6 +465,7 @@
             user-select: none;
             -webkit-user-select: none;
             will-change: transform;
+            touch-action: none;
         }
         .card-item.active {
             transform: translateX(0) scale(1) rotate(0deg);
@@ -402,63 +475,63 @@
             border-color: #3a8aaf;
         }
         .card-item.prev {
-            transform: translateX(-50px) scale(0.88) rotate(-3deg);
+            transform: translateX(clamp(-30px, -5vw, -50px)) scale(0.88) rotate(-3deg);
             opacity: 0.3;
             z-index: 5;
             filter: blur(0.5px);
         }
         .card-item.next {
-            transform: translateX(50px) scale(0.88) rotate(3deg);
+            transform: translateX(clamp(30px, 5vw, 50px)) scale(0.88) rotate(3deg);
             opacity: 0.3;
             z-index: 5;
             filter: blur(0.5px);
         }
         .card-item.hidden {
-            transform: translateX(90px) scale(0.8) rotate(5deg);
+            transform: translateX(clamp(50px, 8vw, 90px)) scale(0.8) rotate(5deg);
             opacity: 0;
             z-index: 0;
             pointer-events: none;
         }
         .card-item .card-site {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: clamp(0.95rem, 1.4vw, 1.2rem);
             color: #8bc1e0;
             margin-bottom: 2px;
         }
         .card-item .card-code {
             font-weight: 700;
             color: #7ac0e0;
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 1.8vw, 1.5rem);
         }
         .card-item .card-container {
             font-weight: 600;
             color: #8ac0da;
         }
         .card-item .card-desc {
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 1vw, 1rem);
         }
         .card-item .card-index {
             position: absolute;
-            top: 12px;
-            left: 18px;
-            font-size: 0.75rem;
+            top: clamp(8px, 1vh, 12px);
+            left: clamp(12px, 1.5vw, 18px);
+            font-size: clamp(0.6rem, 0.7vw, 0.75rem);
             color: #5a8a9a;
             font-weight: 600;
             background: rgba(0,0,0,0.3);
-            padding: 2px 14px;
+            padding: 1px clamp(8px, 1vw, 14px);
             border-radius: 20px;
             border: 1px solid #1f4a5a;
         }
         .card-item .card-select-hint {
             position: absolute;
-            bottom: 12px;
+            bottom: clamp(8px, 1vh, 12px);
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.65rem;
+            font-size: clamp(0.5rem, 0.6vw, 0.65rem);
             color: #5a8a9a;
             opacity: 0.5;
             background: rgba(0,0,0,0.3);
-            padding: 2px 16px;
+            padding: 1px clamp(10px, 1.2vw, 16px);
             border-radius: 20px;
             white-space: nowrap;
             pointer-events: none;
@@ -468,13 +541,15 @@
         .card-dots {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 8px;
-            padding: 4px 0;
+            gap: clamp(6px, 0.8vw, 10px);
+            margin-top: clamp(4px, 0.5vh, 8px);
+            padding: 2px 0;
+            flex-shrink: 0;
+            flex-wrap: wrap;
         }
         .card-dot {
-            width: 14px;
-            height: 14px;
+            width: clamp(10px, 1.2vw, 14px);
+            height: clamp(10px, 1.2vw, 14px);
             border-radius: 50%;
             background: #1f3a4a;
             border: 1px solid #2a5a6a;
@@ -482,6 +557,7 @@
             cursor: pointer;
             transition: all 0.25s ease;
             flex-shrink: 0;
+            touch-action: manipulation;
         }
         .card-dot.active {
             background: #1f5d7a;
@@ -489,37 +565,43 @@
             transform: scale(1.3);
             box-shadow: 0 0 20px rgba(31, 93, 122, 0.4);
         }
-        .card-dot:hover:not(.active) {
-            background: #2a4a5a;
-            transform: scale(1.15);
+        .card-dot:active {
+            transform: scale(0.85);
         }
 
         .card-nav {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            margin-top: 8px;
-            padding: 4px 0;
+            gap: clamp(10px, 1.5vw, 20px);
+            margin-top: clamp(4px, 0.5vh, 8px);
+            padding: 2px 0;
+            flex-shrink: 0;
+            flex-wrap: wrap;
         }
         .card-nav button {
             background: rgba(31, 93, 122, 0.2);
             border: 1px solid #2a5a6a;
             border-radius: 40px;
-            padding: 10px 28px;
+            padding: clamp(6px, 0.8vh, 10px) clamp(16px, 2vw, 28px);
             font-weight: 700;
             color: #8ac0da;
             cursor: pointer;
             transition: 0.15s;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 1vw, 1rem);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: clamp(6px, 0.8vw, 10px);
+            touch-action: manipulation;
+            white-space: nowrap;
         }
         .card-nav button:hover:not(:disabled) {
             background: rgba(31, 93, 122, 0.4);
             border-color: #3a8aaf;
             color: white;
+        }
+        .card-nav button:active:not(:disabled) {
+            transform: scale(0.95);
         }
         .card-nav button:disabled {
             opacity: 0.25;
@@ -528,11 +610,11 @@
         .card-nav .counter {
             font-weight: 700;
             color: #8ac0da;
-            font-size: 1.1rem;
-            min-width: 70px;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            min-width: clamp(50px, 6vw, 70px);
             text-align: center;
             background: rgba(0,0,0,0.2);
-            padding: 6px 16px;
+            padding: clamp(4px, 0.5vh, 6px) clamp(10px, 1.2vw, 16px);
             border-radius: 30px;
             border: 1px solid #1f3a4a;
         }
@@ -541,7 +623,7 @@
             text-align: center;
             color: #5a8a9a;
             font-style: italic;
-            padding: 30px 10px;
+            padding: 20px 10px;
             background: rgba(255,255,255,0.03);
             border-radius: 16px;
             border: 2px dashed #1f3a4a;
@@ -550,25 +632,33 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
         }
 
+        /* ----- Basket Actions ----- */
         .basket-actions {
             display: flex;
-            gap: 12px;
+            gap: clamp(8px, 1vw, 12px);
             justify-content: flex-end;
-            margin-top: 8px;
+            margin-top: clamp(6px, 0.8vh, 10px);
+            flex-shrink: 0;
+            flex-wrap: wrap;
         }
         .basket-actions button {
             background: transparent;
             border: 1px solid #2a5a6a;
-            padding: 10px 22px;
+            padding: clamp(6px, 0.8vh, 10px) clamp(14px, 1.8vw, 22px);
             border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.15s;
             color: #8ab0c8;
-            font-size: 0.95rem;
+            font-size: clamp(0.8rem, 0.9vw, 0.95rem);
+            touch-action: manipulation;
+            white-space: nowrap;
+        }
+        .basket-actions button:active {
+            transform: scale(0.95);
         }
         .basket-actions .clear-btn {
             color: #cc8888;
@@ -586,57 +676,360 @@
             background: rgba(31, 93, 122, 0.3);
         }
 
+        /* ----- Footer ----- */
         .footer-note {
-            margin-top: 14px;
-            font-size: 0.8rem;
+            margin-top: clamp(8px, 1vh, 14px);
+            font-size: clamp(0.65rem, 0.7vw, 0.8rem);
             color: #4a6a7a;
             text-align: right;
             border-top: 1px solid #1f3a4a;
-            padding-top: 12px;
+            padding-top: clamp(8px, 1vh, 12px);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 6px;
         }
         .footer-note .office-status {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: clamp(6px, 0.8vw, 10px);
             color: #5a8a9a;
-            font-size: 0.85rem;
+            font-size: clamp(0.65rem, 0.7vw, 0.85rem);
         }
         .footer-note .office-status i {
             color: #2ecc71;
+            font-size: clamp(0.5rem, 0.6vw, 0.7rem);
         }
 
-        /* Scrollbar */
-        .material-list::-webkit-scrollbar, .basket-list::-webkit-scrollbar {
-            width: 6px;
+        /* ----- Scrollbar ----- */
+        .material-list::-webkit-scrollbar,
+        .basket-list::-webkit-scrollbar {
+            width: 4px;
         }
-        .material-list::-webkit-scrollbar-thumb, .basket-list::-webkit-scrollbar-thumb {
+        .material-list::-webkit-scrollbar-thumb,
+        .basket-list::-webkit-scrollbar-thumb {
             background: #1f3a4a;
             border-radius: 8px;
         }
-        .material-list::-webkit-scrollbar-track, .basket-list::-webkit-scrollbar-track {
+        .material-list::-webkit-scrollbar-track,
+        .basket-list::-webkit-scrollbar-track {
             background: transparent;
         }
-
-        @media (max-width: 860px) {
-            .terminal { padding: 16px; }
-            .terminal-title h1 { font-size: 1.6rem; }
-            .material-panel { min-width: 0; }
-            .basket-panel { min-width: 0; }
-            .filter-bar input { font-size: 1rem; padding: 12px 16px; }
-            .material-item { padding: 12px 12px 12px 16px; flex-wrap: wrap; gap: 6px; }
-            .material-item .desc { font-size: 0.95rem; }
-            .card-item { padding: 14px 16px; font-size: 0.85rem; }
-            .report-btn { padding: 10px 20px; font-size: 0.95rem; }
+        .material-list {
+            scrollbar-width: thin;
+            scrollbar-color: #1f3a4a transparent;
         }
+
+        /* ----- Responsive Breakpoints ----- */
+        @media (max-width: 860px) {
+            .terminal-grid {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .material-panel {
+                flex: 2;
+                min-height: 35vh;
+                max-height: 55vh;
+            }
+            .basket-panel {
+                flex: 1;
+                min-height: 30vh;
+                max-height: 50vh;
+            }
+            .basket-list {
+                max-height: 15vh;
+            }
+            .card-stack-container {
+                height: clamp(140px, 20vh, 180px);
+            }
+            .terminal {
+                height: 100vh;
+                height: 100dvh;
+                max-height: none;
+                border-radius: 20px;
+                padding: 12px;
+            }
+            .terminal-header {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .report-btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .material-item {
+                padding: 8px 12px;
+                border-radius: 30px;
+            }
+            .material-item .desc {
+                font-size: 0.85rem;
+            }
+            .add-btn {
+                padding: 4px 12px;
+                font-size: 0.8rem;
+            }
+            .filter-bar {
+                padding: 8px 12px;
+                border-radius: 30px;
+            }
+            .filter-bar input {
+                padding: 8px 14px;
+                font-size: 0.9rem;
+                min-width: 80px;
+            }
+            .block-btn {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+            .basket-header h3 {
+                font-size: 1rem;
+            }
+            .basket-header span {
+                font-size: 0.85rem;
+                line-height: 26px;
+                padding: 0 12px;
+            }
+        }
+
         @media (max-width: 480px) {
-            .terminal { padding: 10px; border-radius: 20px; }
-            .terminal-title h1 { font-size: 1.3rem; }
-            .block-btn { padding: 6px 12px; font-size: 0.75rem; }
-            .add-btn { padding: 8px 14px; font-size: 0.85rem; }
-            .card-nav button { padding: 8px 16px; font-size: 0.85rem; }
+            body {
+                padding: 6px;
+            }
+            .terminal {
+                border-radius: 14px;
+                padding: 8px;
+                height: 100vh;
+                height: 100dvh;
+            }
+            .terminal-title h1 {
+                font-size: 1.1rem;
+            }
+            .terminal-title .badge {
+                font-size: 0.6rem;
+                padding: 2px 10px;
+            }
+            .status-led {
+                font-size: 0.6rem;
+            }
+            .status-led .dot {
+                width: 8px;
+                height: 8px;
+            }
+            .report-btn {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+                gap: 4px;
+            }
+            .report-btn i {
+                font-size: 0.7rem;
+            }
+            .material-item {
+                padding: 6px 10px;
+                border-radius: 20px;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .material-item .code {
+                font-size: 0.85rem;
+                min-width: 36px;
+            }
+            .material-item .desc {
+                font-size: 0.75rem;
+                min-width: 60px;
+            }
+            .material-item .container-badge {
+                font-size: 0.55rem;
+                padding: 1px 8px;
+            }
+            .add-btn {
+                font-size: 0.7rem;
+                padding: 3px 10px;
+                gap: 4px;
+            }
+            .add-btn i {
+                font-size: 0.6rem;
+            }
+            .filter-bar {
+                padding: 6px 10px;
+                border-radius: 20px;
+                gap: 4px;
+            }
+            .filter-bar input {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+                min-width: 60px;
+            }
+            .block-selector span {
+                font-size: 0.6rem;
+            }
+            .block-btn {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+            }
+            .basket-header h3 {
+                font-size: 0.85rem;
+            }
+            .basket-header h3 i {
+                font-size: 0.7rem;
+            }
+            .basket-header span {
+                font-size: 0.75rem;
+                line-height: 22px;
+                padding: 0 10px;
+            }
+            .basket-item {
+                padding: 4px 8px;
+                border-radius: 20px;
+                font-size: 0.7rem;
+            }
+            .basket-item .b-code {
+                font-size: 0.75rem;
+                min-width: 32px;
+            }
+            .basket-item .b-desc {
+                font-size: 0.65rem;
+            }
+            .basket-item .b-container {
+                font-size: 0.5rem;
+                padding: 1px 6px;
+            }
+            .remove-btn {
+                font-size: 0.9rem;
+                padding: 0 4px;
+            }
+            .card-stack-container {
+                height: clamp(120px, 18vh, 150px);
+                min-height: 90px;
+            }
+            .card-item {
+                padding: 10px 12px;
+                border-radius: 12px;
+                font-size: 0.7rem;
+                line-height: 1.5;
+            }
+            .card-item .card-site {
+                font-size: 0.8rem;
+            }
+            .card-item .card-code {
+                font-size: 0.95rem;
+            }
+            .card-item .card-desc {
+                font-size: 0.7rem;
+            }
+            .card-item .card-index {
+                font-size: 0.5rem;
+                padding: 1px 6px;
+                top: 6px;
+                left: 8px;
+            }
+            .card-item .card-select-hint {
+                font-size: 0.45rem;
+                padding: 1px 8px;
+                bottom: 6px;
+            }
+            .card-dot {
+                width: 8px;
+                height: 8px;
+            }
+            .card-nav button {
+                font-size: 0.7rem;
+                padding: 4px 12px;
+                gap: 4px;
+            }
+            .card-nav .counter {
+                font-size: 0.75rem;
+                min-width: 40px;
+                padding: 2px 8px;
+            }
+            .basket-actions button {
+                font-size: 0.7rem;
+                padding: 4px 12px;
+            }
+            .footer-note {
+                font-size: 0.55rem;
+                padding-top: 6px;
+                margin-top: 6px;
+            }
+            .footer-note .office-status {
+                font-size: 0.55rem;
+            }
+            .material-panel {
+                min-height: 25vh;
+                max-height: 45vh;
+                padding: 8px;
+            }
+            .basket-panel {
+                min-height: 25vh;
+                max-height: 45vh;
+                padding: 8px;
+            }
+            .basket-list {
+                max-height: 12vh;
+                min-height: 30px;
+            }
+        }
+
+        /* Landschaftsmodus auf kleinen Geräten */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .terminal {
+                height: 100vh;
+                height: 100dvh;
+                max-height: none;
+                padding: 8px 12px;
+                border-radius: 14px;
+            }
+            .terminal-grid {
+                flex-direction: row;
+                gap: 8px;
+            }
+            .material-panel {
+                flex: 2;
+                min-height: 20vh;
+                max-height: 70vh;
+            }
+            .basket-panel {
+                flex: 1.2;
+                min-height: 20vh;
+                max-height: 70vh;
+            }
+            .card-stack-container {
+                height: clamp(100px, 18vh, 150px);
+                min-height: 70px;
+            }
+            .basket-list {
+                max-height: 10vh;
+            }
+            .terminal-title h1 {
+                font-size: 1rem;
+            }
+            .terminal-title .badge {
+                font-size: 0.6rem;
+                padding: 2px 10px;
+            }
+            .report-btn {
+                font-size: 0.65rem;
+                padding: 4px 12px;
+            }
+            .material-item {
+                padding: 4px 10px;
+            }
+            .material-item .desc {
+                font-size: 0.75rem;
+            }
+            .add-btn {
+                padding: 3px 10px;
+                font-size: 0.7rem;
+            }
+            .filter-bar input {
+                padding: 4px 10px;
+                font-size: 0.75rem;
+            }
+            .header {
+                padding-bottom: 6px;
+                margin-bottom: 6px;
+            }
         }
     </style>
 </head>
@@ -645,16 +1038,16 @@
     <!-- Terminal Header -->
     <div class="terminal-header">
         <div class="terminal-title">
-            <h1><i class="fas fa-terminal" style="color:#3a8aaf;margin-right:12px;"></i>ASZ Asten</h1>
+            <h1><i class="fas fa-terminal"></i>ASZ Asten</h1>
             <span class="badge"><i class="fas fa-map-pin"></i> Standort 106</span>
         </div>
         <div class="terminal-status">
             <div class="status-led">
                 <span class="dot"></span>
-                <span>Terminal aktiv</span>
+                <span class="status-label">Terminal aktiv</span>
             </div>
             <button class="report-btn" id="reportToOfficeBtn">
-                <i class="fas fa-desktop"></i> An Büro-PC senden
+                <i class="fas fa-desktop"></i> <span class="report-label">An Büro-PC</span>
             </button>
         </div>
     </div>
@@ -664,7 +1057,7 @@
         <!-- Materialauswahl -->
         <div class="material-panel">
             <div class="filter-bar">
-                <input type="text" id="materialSearch" placeholder="🔍 Suchen (Code / Name) ...">
+                <input type="text" id="materialSearch" placeholder="🔍 Suchen (Code / Name) ..." inputmode="search">
                 <div class="block-selector">
                     <span>Block:</span>
                     <button class="block-btn active" data-block="all">Alle</button>
@@ -828,7 +1221,6 @@
                         currentCardIndex = basket.length - 1;
                         updateBasket();
                         renderMaterialList();
-                        // Office-Update
                         sendToOffice('add', mat);
                     }
                 });
@@ -937,9 +1329,11 @@
             setupCardSwipe();
         }
 
-        // ----- Swipe -----
+        // ----- Swipe (Touch & Maus) -----
         let touchStartX = 0, touchStartY = 0;
         let isSwiping = false;
+        let mouseDownX = 0, mouseDownY = 0;
+        let isMouseDragging = false;
 
         function setupCardSwipe() {
             const container = cardStackContainer;
@@ -948,10 +1342,16 @@
             container.removeEventListener('touchstart', handleTouchStart);
             container.removeEventListener('touchmove', handleTouchMove);
             container.removeEventListener('touchend', handleTouchEnd);
+            container.removeEventListener('mousedown', handleMouseDown);
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
 
             container.addEventListener('touchstart', handleTouchStart, { passive: true });
             container.addEventListener('touchmove', handleTouchMove, { passive: false });
             container.addEventListener('touchend', handleTouchEnd, { passive: true });
+            container.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
         }
 
         function handleTouchStart(e) {
@@ -999,6 +1399,47 @@
             }
         }
 
+        function handleMouseDown(e) {
+            if (basket.length === 0) return;
+            mouseDownX = e.clientX;
+            mouseDownY = e.clientY;
+            isMouseDragging = false;
+        }
+
+        function handleMouseMove(e) {
+            if (mouseDownX === 0) return;
+            const deltaX = e.clientX - mouseDownX;
+            const deltaY = e.clientY - mouseDownY;
+            if (Math.abs(deltaX) > 15 && Math.abs(deltaX) > Math.abs(deltaY) * 0.7) {
+                isMouseDragging = true;
+                const activeCard = document.querySelector('.card-item.active');
+                if (activeCard) {
+                    const clamped = Math.max(-80, Math.min(80, deltaX));
+                    activeCard.style.transform = `translateX(${clamped}px) scale(1) rotate(${clamped * 0.02}deg)`;
+                    activeCard.style.transition = 'none';
+                }
+            }
+        }
+
+        function handleMouseUp(e) {
+            if (mouseDownX === 0) return;
+            const deltaX = e.clientX - mouseDownX;
+            const wasDragging = isMouseDragging;
+            mouseDownX = 0;
+            isMouseDragging = false;
+            resetCardTransform();
+
+            if (wasDragging) {
+                if (deltaX < -50 && currentCardIndex < basket.length - 1) {
+                    currentCardIndex++;
+                    renderCardStack();
+                } else if (deltaX > 50 && currentCardIndex > 0) {
+                    currentCardIndex--;
+                    renderCardStack();
+                }
+            }
+        }
+
         function resetCardTransform() {
             const activeCard = document.querySelector('.card-item.active');
             if (activeCard) {
@@ -1018,7 +1459,7 @@
 
         document.addEventListener('keydown', function(e) {
             if (basket.length === 0) return;
-            if (e.target.tagName === 'INPUT') return;
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if (e.key === 'ArrowLeft' && currentCardIndex > 0) {
                 e.preventDefault(); currentCardIndex--; renderCardStack();
             } else if (e.key === 'ArrowRight' && currentCardIndex < basket.length - 1) {
@@ -1037,9 +1478,7 @@
                 basketItems: basket.map(i => ({ code: i.code, desc: i.desc, container: i.container }))
             };
             reportHistory.push(entry);
-            // Status aktualisieren
-            officeStatusText.textContent = `Letzte Aktion: ${action} · ${item.code} · ${timestamp}`;
-            // In einer echten Umgebung würde hier ein POST an den Office-Server erfolgen
+            officeStatusText.textContent = `Letzte Aktion: ${action} · ${item ? item.code : ''} · ${timestamp}`;
             console.log('[Office-Report]', entry);
         }
 
@@ -1059,12 +1498,10 @@
                 items: basket.map(i => ({ code: i.code, desc: i.desc, container: i.container })),
                 total: basket.length
             };
-            // Simuliere Senden an Büro-PC
             officeStatusText.textContent = '📤 Sende an Büro-PC ...';
             setTimeout(() => {
                 officeStatusText.textContent = `✅ Gesendet: ${basket.length} Artikel an Büro-PC (${new Date().toLocaleTimeString('de-DE')})`;
                 console.log('[Office-PC] Vollständiger Report:', JSON.stringify(report, null, 2));
-                // In Produktion: fetch('/api/report', { method: 'POST', body: JSON.stringify(report) })
             }, 800);
         });
 
@@ -1119,6 +1556,11 @@
         setTimeout(() => {
             officeStatusText.textContent = 'Verbunden mit Büro-PC';
         }, 500);
+
+        // Fenstergrößenänderung → neu rendern für korrekte Größen
+        window.addEventListener('resize', function() {
+            // Karteikärtchen bleiben erhalten, nur bei Bedarf
+        });
     })();
 </script>
 </body>
