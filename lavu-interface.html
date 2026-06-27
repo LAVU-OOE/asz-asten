@@ -392,10 +392,7 @@
             <h1>ASZ Asten</h1>
             <span class="badge"><i class="fas fa-map-pin"></i> Standort 106</span>
         </div>
-        <div class="caller-area">
-            <label for="callerName"><i class="fas fa-user-circle"></i> Anrufer:</label>
-            <input type="text" id="callerName" placeholder="Name eintragen..." value="Mustermann GmbH">
-        </div>
+        <!-- "Anrufer:" Bereich wurde gemäß Anforderung entfernt -->
         <button class="print-btn" id="printLabelBtn"><i class="fas fa-print"></i> Label drucken</button>
     </div>
 
@@ -432,7 +429,7 @@
             </div>
             <div class="label-preview" id="labelPreview">
                 <strong>ASZ Asten · 106</strong><br>
-                <span id="labelCaller">Mustermann GmbH</span><br>
+                <!-- Anrufer-Zeile wurde entfernt – nur Frachtartikel werden angezeigt -->
                 <span id="labelItems">—</span>
             </div>
             <div class="basket-actions">
@@ -518,8 +515,6 @@
         const basketListEl = document.getElementById('basketListContainer');
         const basketCountEl = document.getElementById('basketCount');
         const labelItemsEl = document.getElementById('labelItems');
-        const labelCallerEl = document.getElementById('labelCaller');
-        const callerInput = document.getElementById('callerName');
         const searchInput = document.getElementById('materialSearch');
 
         // ----- render functions -----
@@ -596,13 +591,11 @@
             }
             // update badge
             basketCountEl.textContent = basket.length;
-            // update label preview
+            // update label preview (only items, no caller)
             updateLabelPreview();
         }
 
         function updateLabelPreview() {
-            const caller = callerInput.value.trim() || '---';
-            labelCallerEl.textContent = caller;
             if (basket.length === 0) {
                 labelItemsEl.textContent = '— keine Fracht —';
             } else {
@@ -644,12 +637,8 @@
         // ----- search -----
         searchInput.addEventListener('input', renderMaterialList);
 
-        // ----- caller name updates label -----
-        callerInput.addEventListener('input', updateLabelPreview);
-
-        // ----- PRINT label (2 lines) -----
+        // ----- PRINT label (2 lines: site + items) -----
         document.getElementById('printLabelBtn').addEventListener('click', function() {
-            const caller = callerInput.value.trim() || 'Unbekannt';
             let itemLines = '';
             if (basket.length === 0) {
                 itemLines = 'Keine Fracht';
@@ -658,10 +647,9 @@
             }
             // site specific ID: ASZ Asten · 106
             const siteLine = 'ASZ Asten · Standort 106';
-            const callerLine = `Anrufer: ${caller}`;
-            const itemsLine = itemLines;
+            // items line (ohne Anrufer)
 
-            // Print window with 2-line emphasis (site + caller + fracht)
+            // Print window with 2-line emphasis (site + fracht)
             const printWindow = window.open('', '_blank', 'width=450,height=300');
             if (!printWindow) {
                 alert('Bitte Popups erlauben, um das Label zu drucken.');
@@ -679,8 +667,7 @@
 </style></head><body>
     <div class="label">
         <div class="line1"><i class="fas fa-map-pin"></i> ${siteLine}</div>
-        <div class="line2"><strong>${callerLine}</strong></div>
-        <div class="items">${itemsLine.replace(/\n/g, '<br>')}</div>
+        <div class="items">${itemLines.replace(/\n/g, '<br>')}</div>
         <div class="footer">LAVU-Artikel · OÖ LAVU GmbH</div>
     </div>
     <script>
