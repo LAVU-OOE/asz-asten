@@ -1,4 +1,4 @@
-Hier ist die aktualisierte Version mit der geänderten Bezeichnung "Frachtliste - Entsorgung".
+Hier ist die aktualisierte Version, bei der die Beschreibung und der Container im Label vertauscht wurden.
 
 ```html
 <!DOCTYPE html>
@@ -564,7 +564,8 @@ Hier ist die aktualisierte Version mit der geänderten Bezeichnung "Frachtliste 
             if (basket.length === 0) {
                 labelItemsEl.textContent = '— keine Fracht —';
             } else {
-                const lines = basket.map(m => `${m.code} · ${m.desc} (${m.container})`).join('\n');
+                // Vertausche desc und container: zuerst container, dann desc
+                const lines = basket.map(m => `${m.code} · ${m.container} · ${m.desc}`).join('\n');
                 labelItemsEl.textContent = lines;
             }
         }
@@ -602,13 +603,14 @@ Hier ist die aktualisierte Version mit der geänderten Bezeichnung "Frachtliste 
         // ----- search -----
         searchInput.addEventListener('input', renderMaterialList);
 
-        // ----- PRINT label (rechtsbündig) -----
+        // ----- PRINT label (rechtsbündig, desc und container vertauscht) -----
         document.getElementById('printLabelBtn').addEventListener('click', function() {
             let itemLines = '';
             if (basket.length === 0) {
                 itemLines = 'Keine Fracht';
             } else {
-                itemLines = basket.map(m => `${m.code} ${m.desc} (${m.container})`).join('\n');
+                // Vertausche desc und container: container zuerst
+                itemLines = basket.map(m => `${m.code} · ${m.container} · ${m.desc}`).join('\n');
             }
             const siteLine = 'ASZ Asten · Standort 106';
 
@@ -648,3 +650,4 @@ updateLabelPreview();
 </script>
 </body>
 </html>
+```
