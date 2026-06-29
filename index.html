@@ -330,7 +330,7 @@
             overflow: hidden;
         }
 
-        /* ----- Linke Hälfte: Terminal (Materialauswahl) ----- */
+        /* ----- Linke Hälfte: Terminal (Karteikärtchen + Materialauswahl) ----- */
         .terminal-panel {
             flex: 1;
             min-width: 0;
@@ -347,395 +347,18 @@
             display: none;
         }
 
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: clamp(6px, 1vw, 14px);
-            margin-bottom: clamp(10px, 1.5vh, 16px);
-            background: var(--bg-input);
-            padding: clamp(8px, 1vw, 14px) clamp(12px, 1.5vw, 18px);
-            border-radius: 60px;
-            border: 1px solid var(--border-color);
-            flex-shrink: 0;
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-        .filter-bar input {
-            flex: 2;
-            min-width: 120px;
-            border: none;
-            background: var(--bg-input);
-            padding: clamp(8px, 1.2vh, 14px) clamp(14px, 2vw, 20px);
-            border-radius: 40px;
-            font-size: clamp(0.85rem, 1.2vw, 1.1rem);
-            color: var(--text-primary);
-            border: 1px solid var(--border-light);
-            transition: 0.15s;
-            touch-action: manipulation;
-            font-family: var(--font-family);
-        }
-        .filter-bar input:focus {
-            outline: none;
-            border-color: #3a8aaf;
-            background: var(--bg-item-hover);
-            box-shadow: 0 0 0 3px rgba(31, 93, 122, 0.2);
-        }
-        .filter-bar input::placeholder {
-            color: var(--text-muted);
-        }
-        .block-selector {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: clamp(4px, 0.6vw, 10px);
-        }
-        .block-selector span {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: clamp(0.7rem, 0.9vw, 0.95rem);
-            font-family: var(--font-family);
-        }
-        .block-btn {
-            background: transparent;
-            border: 1px solid var(--border-light);
-            padding: clamp(4px, 0.6vh, 8px) clamp(10px, 1.2vw, 18px);
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: clamp(0.65rem, 0.8vw, 0.9rem);
-            cursor: pointer;
-            transition: 0.15s;
-            color: var(--text-muted);
-            touch-action: manipulation;
-            white-space: nowrap;
-            font-family: var(--font-family);
-        }
-        .block-btn.active {
-            background: #1f5d7a;
-            border-color: #3a8aaf;
-            color: white;
-            box-shadow: 0 0 15px rgba(31, 93, 122, 0.3);
-        }
-        .block-btn:hover:not(.active) {
-            background: var(--bg-item-hover);
-        }
-        .block-btn:active {
-            transform: scale(0.95);
-        }
-
-        .material-list {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 4px;
-            margin-top: 4px;
-            min-height: 0;
-            -webkit-overflow-scrolling: touch;
-        }
-        .material-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .material-list::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-color);
-            border-radius: 8px;
-        }
-        .material-list {
-            scrollbar-width: thin;
-            scrollbar-color: var(--scrollbar-color) transparent;
-        }
-
-        .material-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: clamp(6px, 1vw, 12px);
-            padding: clamp(10px, 1.2vh, 16px) clamp(12px, 1.5vw, 18px) clamp(10px, 1.2vh, 16px) clamp(14px, 2vw, 22px);
-            margin-bottom: clamp(4px, 0.5vh, 6px);
-            background: var(--bg-item);
-            border-radius: 60px;
-            border: 1px solid var(--border-color);
-            transition: 0.15s;
-            cursor: default;
-            flex-wrap: wrap;
-        }
-        .material-item:hover {
-            background: var(--bg-item-hover);
-            border-color: var(--border-light);
-        }
-        .material-item .code {
-            font-weight: 700;
-            color: #7ac0e0;
-            font-size: clamp(1rem, 1.3vw, 1.2rem);
-            flex-shrink: 0;
-            min-width: 50px;
-        }
-        .material-item .desc {
-            flex: 1;
-            margin: 0 clamp(6px, 1vw, 14px) 0 clamp(4px, 0.6vw, 8px);
-            font-weight: 500;
-            color: var(--text-primary);
-            font-size: clamp(0.85rem, 1.1vw, 1.05rem);
-            min-width: 80px;
-        }
-        .material-item .container-badge {
-            background: var(--badge-bg);
-            padding: 2px clamp(10px, 1.2vw, 18px);
-            border-radius: 50px;
-            font-size: clamp(0.65rem, 0.8vw, 0.85rem);
-            font-weight: 600;
-            color: var(--badge-text);
-            border: 1px solid var(--border-light);
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-        .material-item .item-controls {
-            display: flex;
-            align-items: center;
-            gap: clamp(4px, 0.6vw, 10px);
-            flex-shrink: 0;
-        }
-        .material-item .qty-btn {
-            background: var(--btn-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 40px;
-            width: clamp(32px, 3.5vw, 42px);
-            height: clamp(32px, 3.5vw, 42px);
-            font-weight: 700;
-            color: var(--btn-text);
-            cursor: pointer;
-            transition: 0.15s;
-            font-size: clamp(1rem, 1.2vw, 1.3rem);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: manipulation;
-            flex-shrink: 0;
-            font-family: var(--font-family);
-        }
-        .material-item .qty-btn:hover:not(:disabled) {
-            background: var(--btn-hover);
-            border-color: #3a8aaf;
-            color: white;
-        }
-        .material-item .qty-btn:active:not(:disabled) {
-            transform: scale(0.9);
-        }
-        .material-item .qty-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        .material-item .qty-btn.minus-btn {
-            color: #cc8888;
-        }
-        .material-item .qty-btn.minus-btn:hover:not(:disabled) {
-            background: rgba(200, 80, 80, 0.2);
-            border-color: #aa5555;
-            color: #ff8888;
-        }
-        .material-item .item-count {
-            font-weight: 700;
-            color: var(--count-color);
-            font-size: clamp(1rem, 1.2vw, 1.2rem);
-            min-width: 24px;
-            text-align: center;
-            transition: color 0.3s ease;
-        }
-        .material-item .item-count.zero {
-            color: var(--text-muted);
-        }
-
-        /* ----- Rechte Hälfte: Frachtliste & Karteikärtchen ----- */
-        .right-panel {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: clamp(8px, 1vw, 12px);
-            overflow: hidden;
-        }
-
-        /* ----- Office Panel (Frachtliste - Entsorgung) ----- */
-        .office-panel {
-            flex: 1;
-            min-width: 0;
-            background: var(--bg-secondary);
-            border-radius: clamp(14px, 2vw, 20px);
-            padding: clamp(10px, 1.5vw, 18px);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-        .office-panel.hidden {
-            display: none;
-        }
-
-        .office-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: clamp(8px, 1vh, 12px);
-            margin-bottom: clamp(8px, 1vh, 12px);
-            flex-shrink: 0;
-        }
-        .office-header h3 {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: clamp(1rem, 1.5vw, 1.3rem);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0;
-            font-family: var(--font-family);
-        }
-        .office-header h3 i, .office-header h3 .material-icons {
-            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-        }
-        .office-header .count-badge {
-            background: #1f5d7a;
-            color: white;
-            border-radius: 40px;
-            padding: 0 clamp(12px, 1.5vw, 18px);
-            font-weight: 700;
-            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-            line-height: clamp(28px, 3.5vh, 34px);
-            border: 1px solid #3a8aaf;
-            flex-shrink: 0;
-        }
-
-        .office-list {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 4px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .office-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .office-list::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-color);
-            border-radius: 8px;
-        }
-        .office-list {
-            scrollbar-width: thin;
-            scrollbar-color: var(--scrollbar-color) transparent;
-        }
-
-        .office-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: clamp(4px, 0.6vw, 10px);
-            padding: clamp(8px, 0.8vh, 12px) clamp(10px, 1.2vw, 16px);
-            background: var(--bg-item);
-            border-radius: 40px;
-            margin-bottom: clamp(4px, 0.4vh, 6px);
-            border: 1px solid var(--border-color);
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-        .office-item:hover {
-            background: var(--bg-item-hover);
-        }
-        .office-item .o-code {
-            font-weight: 700;
-            color: #7ac0e0;
-            flex-shrink: 0;
-            min-width: 44px;
-            font-size: clamp(0.85rem, 1vw, 1rem);
-        }
-        .office-item .o-desc {
-            flex: 1;
-            margin: 0 clamp(4px, 0.6vw, 10px);
-            font-weight: 500;
-            color: var(--text-primary);
-            font-size: clamp(0.75rem, 0.85vw, 0.9rem);
-            min-width: 50px;
-        }
-        .office-item .o-container {
-            background: var(--badge-bg);
-            padding: 1px clamp(8px, 1vw, 16px);
-            border-radius: 30px;
-            font-size: clamp(0.6rem, 0.7vw, 0.75rem);
-            font-weight: 600;
-            color: var(--badge-text);
-            border: 1px solid var(--border-light);
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-        .office-item .o-time {
-            font-size: clamp(0.55rem, 0.6vw, 0.7rem);
-            color: var(--text-muted);
-            flex-shrink: 0;
-            min-width: 60px;
-            text-align: right;
-        }
-        .office-item .o-delete {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
-            padding: 0 clamp(4px, 0.5vw, 8px);
-            transition: 0.15s;
-            touch-action: manipulation;
-            flex-shrink: 0;
-        }
-        .office-item .o-delete:hover {
-            color: #e06666;
-        }
-        .office-item .o-delete:active {
-            transform: scale(0.85);
-        }
-
-        .office-empty {
-            text-align: center;
-            color: var(--text-muted);
-            font-style: italic;
-            padding: 30px 10px;
-            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
-        }
-
-        .office-footer {
-            margin-top: auto;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-color);
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .office-footer button {
-            background: transparent;
-            border: 1px solid #aa5555;
-            border-radius: 40px;
-            padding: 6px 16px;
-            color: #cc8888;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            touch-action: manipulation;
-            font-family: var(--font-family);
-        }
-        .office-footer button:hover {
-            background: rgba(200, 80, 80, 0.15);
-        }
-        .office-footer span {
-            color: var(--text-muted);
-            font-size: 0.7rem;
-        }
-
-        /* ----- Card Stack (Karteikärtchen) - über dem Terminal bei mobile, rechts bei desktop ----- */
+        /* Card Panel innerhalb des Terminal-Panels (oben) */
         .card-panel {
             flex: 0 0 auto;
             max-height: 45%;
-            background: var(--bg-secondary);
+            background: var(--bg-card);
             border-radius: clamp(14px, 2vw, 20px);
             padding: clamp(10px, 1.5vw, 18px);
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            margin-bottom: clamp(8px, 1vw, 12px);
             transition: background 0.3s ease, border-color 0.3s ease;
         }
         .card-panel.hidden {
@@ -980,6 +603,210 @@
             font-size: clamp(0.9rem, 1.1vw, 1.1rem);
         }
 
+        /* ----- Material List (unterhalb der Karten) ----- */
+        .material-list-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(6px, 1vw, 14px);
+            margin-bottom: clamp(10px, 1.5vh, 16px);
+            background: var(--bg-input);
+            padding: clamp(8px, 1vw, 14px) clamp(12px, 1.5vw, 18px);
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .filter-bar input {
+            flex: 2;
+            min-width: 120px;
+            border: none;
+            background: var(--bg-input);
+            padding: clamp(8px, 1.2vh, 14px) clamp(14px, 2vw, 20px);
+            border-radius: 40px;
+            font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+            transition: 0.15s;
+            touch-action: manipulation;
+            font-family: var(--font-family);
+        }
+        .filter-bar input:focus {
+            outline: none;
+            border-color: #3a8aaf;
+            background: var(--bg-item-hover);
+            box-shadow: 0 0 0 3px rgba(31, 93, 122, 0.2);
+        }
+        .filter-bar input::placeholder {
+            color: var(--text-muted);
+        }
+        .block-selector {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: clamp(4px, 0.6vw, 10px);
+        }
+        .block-selector span {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: clamp(0.7rem, 0.9vw, 0.95rem);
+            font-family: var(--font-family);
+        }
+        .block-btn {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            padding: clamp(4px, 0.6vh, 8px) clamp(10px, 1.2vw, 18px);
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: clamp(0.65rem, 0.8vw, 0.9rem);
+            cursor: pointer;
+            transition: 0.15s;
+            color: var(--text-muted);
+            touch-action: manipulation;
+            white-space: nowrap;
+            font-family: var(--font-family);
+        }
+        .block-btn.active {
+            background: #1f5d7a;
+            border-color: #3a8aaf;
+            color: white;
+            box-shadow: 0 0 15px rgba(31, 93, 122, 0.3);
+        }
+        .block-btn:hover:not(.active) {
+            background: var(--bg-item-hover);
+        }
+        .block-btn:active {
+            transform: scale(0.95);
+        }
+
+        .material-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-top: 4px;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        .material-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .material-list::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-color);
+            border-radius: 8px;
+        }
+        .material-list {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-color) transparent;
+        }
+
+        .material-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: clamp(6px, 1vw, 12px);
+            padding: clamp(10px, 1.2vh, 16px) clamp(12px, 1.5vw, 18px) clamp(10px, 1.2vh, 16px) clamp(14px, 2vw, 22px);
+            margin-bottom: clamp(4px, 0.5vh, 6px);
+            background: var(--bg-item);
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+            transition: 0.15s;
+            cursor: default;
+            flex-wrap: wrap;
+        }
+        .material-item:hover {
+            background: var(--bg-item-hover);
+            border-color: var(--border-light);
+        }
+        .material-item .code {
+            font-weight: 700;
+            color: #7ac0e0;
+            font-size: clamp(1rem, 1.3vw, 1.2rem);
+            flex-shrink: 0;
+            min-width: 50px;
+        }
+        .material-item .desc {
+            flex: 1;
+            margin: 0 clamp(6px, 1vw, 14px) 0 clamp(4px, 0.6vw, 8px);
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+            min-width: 80px;
+        }
+        .material-item .container-badge {
+            background: var(--badge-bg);
+            padding: 2px clamp(10px, 1.2vw, 18px);
+            border-radius: 50px;
+            font-size: clamp(0.65rem, 0.8vw, 0.85rem);
+            font-weight: 600;
+            color: var(--badge-text);
+            border: 1px solid var(--border-light);
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .material-item .item-controls {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 0.6vw, 10px);
+            flex-shrink: 0;
+        }
+        .material-item .qty-btn {
+            background: var(--btn-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            width: clamp(32px, 3.5vw, 42px);
+            height: clamp(32px, 3.5vw, 42px);
+            font-weight: 700;
+            color: var(--btn-text);
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: clamp(1rem, 1.2vw, 1.3rem);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            flex-shrink: 0;
+            font-family: var(--font-family);
+        }
+        .material-item .qty-btn:hover:not(:disabled) {
+            background: var(--btn-hover);
+            border-color: #3a8aaf;
+            color: white;
+        }
+        .material-item .qty-btn:active:not(:disabled) {
+            transform: scale(0.9);
+        }
+        .material-item .qty-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .material-item .qty-btn.minus-btn {
+            color: #cc8888;
+        }
+        .material-item .qty-btn.minus-btn:hover:not(:disabled) {
+            background: rgba(200, 80, 80, 0.2);
+            border-color: #aa5555;
+            color: #ff8888;
+        }
+        .material-item .item-count {
+            font-weight: 700;
+            color: var(--count-color);
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
+            min-width: 24px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        .material-item .item-count.zero {
+            color: var(--text-muted);
+        }
+
         /* ----- Terminal Actions ----- */
         .terminal-actions {
             display: flex;
@@ -1030,7 +857,189 @@
             background: rgba(46, 204, 113, 0.2);
         }
 
-        /* ----- Footer mit dezenter Design-Steuerung ----- */
+        /* ----- Rechte Hälfte: Frachtliste (Office) ----- */
+        .right-panel {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 1vw, 12px);
+            overflow: hidden;
+        }
+
+        .office-panel {
+            flex: 1;
+            min-width: 0;
+            background: var(--bg-secondary);
+            border-radius: clamp(14px, 2vw, 20px);
+            padding: clamp(10px, 1.5vw, 18px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .office-panel.hidden {
+            display: none;
+        }
+
+        .office-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: clamp(8px, 1vh, 12px);
+            margin-bottom: clamp(8px, 1vh, 12px);
+            flex-shrink: 0;
+        }
+        .office-header h3 {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: clamp(1rem, 1.5vw, 1.3rem);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            font-family: var(--font-family);
+        }
+        .office-header h3 i, .office-header h3 .material-icons {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+        }
+        .office-header .count-badge {
+            background: #1f5d7a;
+            color: white;
+            border-radius: 40px;
+            padding: 0 clamp(12px, 1.5vw, 18px);
+            font-weight: 700;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            line-height: clamp(28px, 3.5vh, 34px);
+            border: 1px solid #3a8aaf;
+            flex-shrink: 0;
+        }
+
+        .office-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .office-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .office-list::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-color);
+            border-radius: 8px;
+        }
+        .office-list {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-color) transparent;
+        }
+
+        .office-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: clamp(4px, 0.6vw, 10px);
+            padding: clamp(8px, 0.8vh, 12px) clamp(10px, 1.2vw, 16px);
+            background: var(--bg-item);
+            border-radius: 40px;
+            margin-bottom: clamp(4px, 0.4vh, 6px);
+            border: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .office-item:hover {
+            background: var(--bg-item-hover);
+        }
+        .office-item .o-code {
+            font-weight: 700;
+            color: #7ac0e0;
+            flex-shrink: 0;
+            min-width: 44px;
+            font-size: clamp(0.85rem, 1vw, 1rem);
+        }
+        .office-item .o-desc {
+            flex: 1;
+            margin: 0 clamp(4px, 0.6vw, 10px);
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: clamp(0.75rem, 0.85vw, 0.9rem);
+            min-width: 50px;
+        }
+        .office-item .o-container {
+            background: var(--badge-bg);
+            padding: 1px clamp(8px, 1vw, 16px);
+            border-radius: 30px;
+            font-size: clamp(0.6rem, 0.7vw, 0.75rem);
+            font-weight: 600;
+            color: var(--badge-text);
+            border: 1px solid var(--border-light);
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .office-item .o-time {
+            font-size: clamp(0.55rem, 0.6vw, 0.7rem);
+            color: var(--text-muted);
+            flex-shrink: 0;
+            min-width: 60px;
+            text-align: right;
+        }
+        .office-item .o-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            padding: 0 clamp(4px, 0.5vw, 8px);
+            transition: 0.15s;
+            touch-action: manipulation;
+            flex-shrink: 0;
+        }
+        .office-item .o-delete:hover {
+            color: #e06666;
+        }
+        .office-item .o-delete:active {
+            transform: scale(0.85);
+        }
+
+        .office-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 30px 10px;
+            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+        }
+
+        .office-footer {
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .office-footer button {
+            background: transparent;
+            border: 1px solid #aa5555;
+            border-radius: 40px;
+            padding: 6px 16px;
+            color: #cc8888;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            touch-action: manipulation;
+            font-family: var(--font-family);
+        }
+        .office-footer button:hover {
+            background: rgba(200, 80, 80, 0.15);
+        }
+        .office-footer span {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        /* ----- Footer ----- */
         .app-footer {
             margin-top: clamp(8px, 1vh, 14px);
             font-size: clamp(0.65rem, 0.7vw, 0.8rem);
@@ -1196,7 +1205,7 @@
             }
         }
 
-        /* ----- Responsive: Karteikärtchen über dem Terminal bei mobile ----- */
+        /* ----- Responsive ----- */
         @media (max-width: 860px) {
             .app-grid {
                 flex-direction: column;
@@ -1207,18 +1216,19 @@
                 min-height: 30vh;
                 max-height: 50vh;
             }
+            .card-panel {
+                max-height: 40%;
+                flex: 0 0 auto;
+                margin-bottom: 8px;
+            }
+            .material-list-section {
+                flex: 1;
+                min-height: 0;
+            }
             .right-panel {
                 flex: 1;
                 min-height: 30vh;
                 max-height: 50vh;
-                flex-direction: column-reverse;
-            }
-            .card-panel {
-                max-height: 45%;
-                flex: 1;
-            }
-            .office-panel {
-                flex: 1;
             }
             .app-container {
                 height: 100vh;
@@ -1247,7 +1257,7 @@
             .sync-status .dot { width: 8px; height: 8px; }
             .terminal-panel { min-height: 25vh; max-height: 45vh; padding: 8px; }
             .right-panel { min-height: 25vh; max-height: 45vh; }
-            .card-panel { max-height: 40%; padding: 8px; }
+            .card-panel { max-height: 35%; padding: 8px; }
             .office-panel { padding: 8px; }
             .office-item .o-time { min-width: 40px; font-size: 0.5rem; }
             .office-item .o-delete { font-size: 0.8rem; }
@@ -1299,48 +1309,9 @@
 
     <!-- Main Grid - 50/50 Split -->
     <div class="app-grid">
-        <!-- Linke Hälfte: Materialauswahl -->
+        <!-- Linke Hälfte: Karteikärtchen (oben) + Materialauswahl (unten) -->
         <div class="terminal-panel" id="terminalPanel">
-            <div class="filter-bar">
-                <input type="text" id="materialSearch" placeholder="🔍 Suchen (Code / Name) ..." inputmode="search">
-                <div class="block-selector">
-                    <span>Block:</span>
-                    <button class="block-btn active" data-block="all">Alle</button>
-                    <button class="block-btn" data-block="1000">1000</button>
-                    <button class="block-btn" data-block="2000">2000</button>
-                    <button class="block-btn" data-block="3000">3000</button>
-                    <button class="block-btn" data-block="4000">4000</button>
-                    <button class="block-btn" data-block="4300">4300</button>
-                    <button class="block-btn" data-block="9000">9000</button>
-                </div>
-            </div>
-            <div class="material-list" id="materialListContainer"></div>
-
-            <div class="terminal-actions">
-                <button class="clear-btn" id="clearBasketBtn"><i class="fas fa-trash-alt"></i> Alle Leeren</button>
-                <button class="sample-btn" id="addSampleBtn"><i class="fas fa-plus-circle"></i> Beispiel</button>
-                <button class="sync-btn" id="syncNowBtn"><i class="fas fa-sync-alt"></i> Sync jetzt</button>
-            </div>
-        </div>
-
-        <!-- Rechte Hälfte: Frachtliste & Karteikärtchen -->
-        <div class="right-panel">
-            <!-- Office Panel - Frachtliste - Entsorgung -->
-            <div class="office-panel hidden" id="officePanel">
-                <div class="office-header">
-                    <h3><i class="fas fa-clipboard-list"></i> Frachtliste - Entsorgung</h3>
-                    <span class="count-badge" id="officeCount">0</span>
-                </div>
-                <div class="office-list" id="officeListContainer">
-                    <div class="office-empty">📭 Keine Fracht im System</div>
-                </div>
-                <div class="office-footer">
-                    <button id="officeClearBtn"><i class="fas fa-trash-alt"></i> Alle löschen</button>
-                    <span id="officeLastSync">Letzte Sync: —</span>
-                </div>
-            </div>
-
-            <!-- Card Panel - Karteikärtchen (über dem Terminal bei mobile, rechts bei desktop) -->
+            <!-- Card Panel (oben im Terminal-Panel) -->
             <div class="card-panel" id="cardPanel">
                 <div class="card-panel-header">
                     <h4><i class="fas fa-id-card"></i> Karteikärtchen</h4>
@@ -1356,10 +1327,51 @@
                     <button id="cardNextBtn" disabled><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
+
+            <!-- Material List Section (unten im Terminal-Panel) -->
+            <div class="material-list-section">
+                <div class="filter-bar">
+                    <input type="text" id="materialSearch" placeholder="🔍 Suchen (Code / Name) ..." inputmode="search">
+                    <div class="block-selector">
+                        <span>Block:</span>
+                        <button class="block-btn active" data-block="all">Alle</button>
+                        <button class="block-btn" data-block="1000">1000</button>
+                        <button class="block-btn" data-block="2000">2000</button>
+                        <button class="block-btn" data-block="3000">3000</button>
+                        <button class="block-btn" data-block="4000">4000</button>
+                        <button class="block-btn" data-block="4300">4300</button>
+                        <button class="block-btn" data-block="9000">9000</button>
+                    </div>
+                </div>
+                <div class="material-list" id="materialListContainer"></div>
+            </div>
+
+            <div class="terminal-actions">
+                <button class="clear-btn" id="clearBasketBtn"><i class="fas fa-trash-alt"></i> Alle Leeren</button>
+                <button class="sample-btn" id="addSampleBtn"><i class="fas fa-plus-circle"></i> Beispiel</button>
+                <button class="sync-btn" id="syncNowBtn"><i class="fas fa-sync-alt"></i> Sync jetzt</button>
+            </div>
+        </div>
+
+        <!-- Rechte Hälfte: Frachtliste -->
+        <div class="right-panel">
+            <div class="office-panel" id="officePanel">
+                <div class="office-header">
+                    <h3><i class="fas fa-clipboard-list"></i> Frachtliste - Entsorgung</h3>
+                    <span class="count-badge" id="officeCount">0</span>
+                </div>
+                <div class="office-list" id="officeListContainer">
+                    <div class="office-empty">📭 Keine Fracht im System</div>
+                </div>
+                <div class="office-footer">
+                    <button id="officeClearBtn"><i class="fas fa-trash-alt"></i> Alle löschen</button>
+                    <span id="officeLastSync">Letzte Sync: —</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Footer mit dezenter Design-Steuerung -->
+    <!-- Footer -->
     <div class="app-footer">
         <div class="footer-left">
             <i class="fas fa-circle" id="footerSyncIcon"></i>
