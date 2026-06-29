@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ASZ Asten · Terminal</title>
+    <title>ASZ Asten · Terminal & Office</title>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Font & Icons -->
@@ -664,9 +664,9 @@
             border: 1px solid var(--border-color);
         }
 
-        /* ----- RIGHT COLUMN: Material List ----- */
+        /* ----- RIGHT COLUMN: Office / Frachtliste ----- */
         .right-col {
-            flex: 1.5;
+            flex: 1.2;
             min-width: 0;
             background: var(--bg-secondary);
             border-radius: var(--radius-lg);
@@ -703,14 +703,19 @@
             color: var(--accent-primary);
         }
 
-        .right-col-header .material-count {
-            color: var(--text-muted);
-            font-size: clamp(0.8rem, 0.9vw, 0.95rem);
-            font-weight: 500;
+        .right-col-header .office-count-badge {
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 40px;
+            padding: 0 clamp(12px, 1.5vw, 18px);
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            line-height: clamp(28px, 3.5vh, 34px);
+            border: 1px solid var(--border-active);
         }
 
-        /* Material List */
-        .material-list {
+        /* Office / Frachtliste */
+        .office-list {
             flex: 1;
             overflow-y: auto;
             padding-right: 4px;
@@ -718,7 +723,7 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .material-item {
+        .office-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -732,12 +737,12 @@
             flex-wrap: wrap;
         }
 
-        .material-item:hover {
+        .office-item:hover {
             background: var(--bg-item-hover);
             border-color: var(--border-light);
         }
 
-        .material-item .code {
+        .office-item .code {
             font-weight: 700;
             color: var(--accent-primary);
             font-size: clamp(0.9rem, 1.1vw, 1.1rem);
@@ -745,7 +750,7 @@
             min-width: 44px;
         }
 
-        .material-item .desc {
+        .office-item .desc {
             flex: 1;
             margin: 0 clamp(4px, 0.6vw, 10px);
             font-weight: 500;
@@ -754,7 +759,7 @@
             min-width: 60px;
         }
 
-        .material-item .container-tag {
+        .office-item .container-tag {
             background: var(--bg-surface);
             padding: 2px clamp(8px, 0.8vw, 14px);
             border-radius: 50px;
@@ -766,62 +771,48 @@
             flex-shrink: 0;
         }
 
-        .material-item .item-controls {
-            display: flex;
-            align-items: center;
-            gap: clamp(4px, 0.5vw, 8px);
+        .office-item .time {
+            font-size: clamp(0.5rem, 0.55vw, 0.65rem);
+            color: var(--text-dim);
             flex-shrink: 0;
+            min-width: 50px;
+            text-align: right;
         }
 
-        .material-item .qty-btn {
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 40px;
-            width: clamp(28px, 2.8vw, 38px);
-            height: clamp(28px, 2.8vw, 38px);
-            font-weight: 700;
-            color: var(--text-secondary);
+        .office-item .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
             cursor: pointer;
+            font-size: clamp(0.8rem, 0.9vw, 1rem);
+            padding: 0 clamp(4px, 0.5vw, 8px);
             transition: all var(--transition-speed) ease;
-            font-size: clamp(0.9rem, 1vw, 1.1rem);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-family);
-            touch-action: manipulation;
             flex-shrink: 0;
         }
 
-        .material-item .qty-btn:hover:not(:disabled) {
-            background: var(--bg-item-hover);
-            border-color: var(--border-active);
-            color: var(--text-primary);
-        }
-
-        .material-item .qty-btn:disabled {
-            opacity: 0.25;
-            cursor: not-allowed;
-        }
-
-        .material-item .qty-btn.minus-btn {
+        .office-item .delete-btn:hover {
             color: var(--accent-danger);
         }
 
-        .material-item .qty-btn.minus-btn:hover:not(:disabled) {
-            background: rgba(224, 112, 112, 0.12);
-            border-color: var(--accent-danger);
+        .office-item .delete-btn:active {
+            transform: scale(0.85);
         }
 
-        .material-item .item-count {
-            font-weight: 700;
-            color: var(--text-secondary);
-            font-size: clamp(0.9rem, 1vw, 1.1rem);
-            min-width: 22px;
+        .office-empty {
             text-align: center;
+            color: var(--text-muted);
+            padding: 40px 10px;
+            background: var(--bg-item);
+            border-radius: var(--radius-md);
+            border: 2px dashed var(--border-color);
+            font-size: clamp(0.9rem, 1vw, 1rem);
         }
 
-        .material-item .item-count.zero {
+        .office-empty i {
+            font-size: clamp(1.5rem, 2vw, 2.2rem);
             color: var(--text-dim);
+            display: block;
+            margin-bottom: 8px;
         }
 
         /* Actions */
@@ -989,11 +980,11 @@
             .card-stack-wrapper { min-height: 70px; }
             .card-item { padding: 10px 14px; font-size: 0.7rem; }
             .card-item .card-code { font-size: 0.9rem; }
-            .material-item { padding: 5px 8px; gap: 4px; }
-            .material-item .desc { font-size: 0.7rem; min-width: 40px; }
-            .material-item .qty-btn { width: 24px; height: 24px; font-size: 0.75rem; }
-            .material-item .code { font-size: 0.75rem; min-width: 34px; }
-            .material-item .container-tag { font-size: 0.5rem; padding: 1px 6px; }
+            .office-item { padding: 5px 8px; gap: 4px; }
+            .office-item .desc { font-size: 0.7rem; min-width: 40px; }
+            .office-item .code { font-size: 0.75rem; min-width: 34px; }
+            .office-item .container-tag { font-size: 0.5rem; padding: 1px 6px; }
+            .office-item .time { font-size: 0.45rem; min-width: 35px; }
             .search-bar { padding: 6px 12px; }
             .search-bar input { font-size: 0.75rem; }
             .search-bar .block-filter .block-btn { font-size: 0.5rem; padding: 2px 6px; }
@@ -1071,13 +1062,18 @@
             </div>
         </div>
 
-        <!-- RIGHT: Material List -->
+        <!-- RIGHT: Frachtliste (Office) -->
         <div class="right-col">
             <div class="right-col-header">
-                <h3><i class="fas fa-boxes"></i> Materialliste</h3>
-                <span class="material-count" id="materialCountLabel">0 Einträge</span>
+                <h3><i class="fas fa-clipboard-list"></i> Frachtliste - Entsorgung</h3>
+                <span class="office-count-badge" id="officeCountLabel">0</span>
             </div>
-            <div class="material-list" id="materialList"></div>
+            <div class="office-list" id="officeList">
+                <div class="office-empty">
+                    <i class="fas fa-box-open"></i>
+                    <span>Keine Fracht im System</span>
+                </div>
+            </div>
             <div class="actions-bar">
                 <button class="clear-btn" id="clearBasketBtn"><i class="fas fa-trash-alt"></i> Alle Leeren</button>
                 <button class="sample-btn" id="addSampleBtn"><i class="fas fa-plus-circle"></i> Beispiel</button>
@@ -1169,12 +1165,12 @@
         // ============================================================
         //  DOM REFS
         // ============================================================
-        const materialListEl = document.getElementById('materialList');
+        const officeListEl = document.getElementById('officeList');
         const cardStackInner = document.getElementById('cardStackInner');
         const cardDots = document.getElementById('cardDots');
         const cardCounter = document.getElementById('cardCounter');
         const cardCountLabel = document.getElementById('cardCountLabel');
-        const materialCountLabel = document.getElementById('materialCountLabel');
+        const officeCountLabel = document.getElementById('officeCountLabel');
         const cardPrevBtn = document.getElementById('cardPrevBtn');
         const cardNextBtn = document.getElementById('cardNextBtn');
         const searchInput = document.getElementById('materialSearch');
@@ -1253,59 +1249,40 @@
         //  RENDER
         // ============================================================
         function renderAll() {
-            renderMaterialList();
+            renderOfficeList();
             renderCardStack();
             updateCounts();
             updateSyncStatus(true);
         }
 
-        function renderMaterialList() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            let filtered = materials.filter(m => {
-                if (activeBlock !== 'all' && m.block !== activeBlock) return false;
-                if (searchTerm) {
-                    return m.code.includes(searchTerm) || m.desc.toLowerCase().includes(searchTerm);
-                }
-                return true;
-            });
-
-            if (filtered.length === 0) {
-                materialListEl.innerHTML = `
-                    <div style="text-align:center;padding:40px 16px;color:var(--text-muted);">
-                        <i class="fas fa-search" style="font-size:1.5rem;display:block;margin-bottom:8px;opacity:0.5;"></i>
-                        Keine Materialien gefunden
+        function renderOfficeList() {
+            if (basket.length === 0) {
+                officeListEl.innerHTML = `
+                    <div class="office-empty">
+                        <i class="fas fa-box-open"></i>
+                        <span>Keine Fracht im System</span>
                     </div>
                 `;
                 return;
             }
 
             let html = '';
-            filtered.forEach(m => {
-                const count = getItemCount(m.code);
+            basket.forEach((item) => {
+                const time = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
                 html += `
-                    <div class="material-item">
-                        <span class="code">${m.code}</span>
-                        <span class="desc">${m.desc}</span>
-                        <span class="container-tag"><i class="fas fa-box" style="font-size:0.6rem;"></i> ${m.container}</span>
-                        <div class="item-controls">
-                            <button class="qty-btn minus-btn" data-code="${m.code}" ${count === 0 ? 'disabled' : ''}>
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span class="item-count ${count === 0 ? 'zero' : ''}">${count}</span>
-                            <button class="qty-btn plus-btn" data-code="${m.code}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
+                    <div class="office-item">
+                        <span class="code">${item.code}</span>
+                        <span class="desc">${item.desc}</span>
+                        <span class="container-tag"><i class="fas fa-box" style="font-size:0.6rem;"></i> ${item.container}</span>
+                        <span class="time">${time}</span>
+                        <button class="delete-btn" data-id="${item.id}" title="Löschen"><i class="fas fa-times"></i></button>
                     </div>
                 `;
             });
-            materialListEl.innerHTML = html;
+            officeListEl.innerHTML = html;
 
-            document.querySelectorAll('.plus-btn').forEach(btn => {
-                btn.addEventListener('click', () => addToBasket(btn.dataset.code));
-            });
-            document.querySelectorAll('.minus-btn').forEach(btn => {
-                btn.addEventListener('click', () => removeFromBasket(btn.dataset.code));
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => removeSpecificItem(btn.dataset.id));
             });
         }
 
@@ -1386,7 +1363,7 @@
         function updateCounts() {
             const total = getTotalItems();
             cardCountLabel.textContent = total;
-            materialCountLabel.textContent = total + ' Einträge';
+            officeCountLabel.textContent = total;
         }
 
         function updateSyncStatus(connected) {
@@ -1545,18 +1522,20 @@
         // ============================================================
         document.getElementById('clearBasketBtn').addEventListener('click', () => {
             if (basket.length === 0) return;
-            if (confirm('Möchten Sie wirklich alle Artikel entfernen?')) clearBasket();
+            if (confirm('Möchten Sie wirklich alle Artikel aus der Frachtliste entfernen?')) clearBasket();
         });
 
         document.getElementById('addSampleBtn').addEventListener('click', () => {
-            const sampleCodes = ['2110', '2120', '4050'];
+            const sampleCodes = ['2110', '2120', '4050', '2210', '3010'];
+            let added = 0;
             sampleCodes.forEach(code => {
                 const mat = materials.find(m => m.code === code);
                 if (mat) {
                     basket.push({ ...mat, id: Date.now() + '_' + Math.random().toString(36).substr(2, 6) });
+                    added++;
                 }
             });
-            if (sampleCodes.length > 0) {
+            if (added > 0) {
                 currentCardIndex = basket.length - 1;
                 saveToStorage();
                 renderAll();
@@ -1581,12 +1560,21 @@
                 document.querySelectorAll('.block-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 activeBlock = this.dataset.block;
-                renderMaterialList();
+                // Block filter nur für die Suche relevant
             });
         });
 
-        // Search
-        searchInput.addEventListener('input', renderMaterialList);
+        // Search - filtered view in office list
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const items = document.querySelectorAll('.office-item');
+            items.forEach(item => {
+                const code = item.querySelector('.code')?.textContent?.toLowerCase() || '';
+                const desc = item.querySelector('.desc')?.textContent?.toLowerCase() || '';
+                const match = !searchTerm || code.includes(searchTerm) || desc.includes(searchTerm);
+                item.style.display = match ? 'flex' : 'none';
+            });
+        });
 
         // Theme Toggle
         function toggleTheme() {
@@ -1624,7 +1612,7 @@
             deviceInfo.textContent = isMobile ? '📱 Mobil' : window.innerWidth < 900 ? '📱 Tablet' : '🖥️ PC';
 
             console.log('🔄 ASZ Asten System gestartet');
-            console.log(`📦 ${getTotalItems()} Artikel im System`);
+            console.log(`📦 ${getTotalItems()} Artikel in der Frachtliste`);
         }
 
         init();
