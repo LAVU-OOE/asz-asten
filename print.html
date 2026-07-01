@@ -188,7 +188,7 @@
         }
 
         /* ==========================================
-           NEU: SETTINGS PAGE / MODAL & FLOATING ICON
+           SETTINGS PAGE / MODAL & FLOATING ICON
            ========================================== */
         .floating-settings-btn {
             position: fixed;
@@ -247,15 +247,26 @@
             padding-bottom: 10px;
         }
 
-        .modal-close-btn {
-            background-color: #1a4b60;
+        .btn-save-defaults {
+            background-color: #2980b9;
             color: white;
-            margin-top: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-save-defaults:hover {
+            background-color: #2471a3;
+        }
+
+        .modal-close-btn {
+            background-color: #7f8c8d;
+            color: white;
+            margin-top: 10px;
             width: 100%;
         }
         
         .modal-close-btn:hover {
-            background-color: #113342;
+            background-color: #6c7a7d;
         }
 
         /* ==========================================
@@ -371,33 +382,27 @@
 </head>
 <body>
 
-    <!-- Steuerungspanel (wird beim Drucken komplett ausgeblendet) -->
     <div class="no-print-container">
-        <!-- Zweigeteilter Headerbereich -->
         <div class="app-header">
             <div class="app-header-left">LAVU OÖ - Etiketten-Druckstudio</div>
-            <div class="app-header-right">106 - ASZ Asten</div>
+            <div class="app-header-right" id="headerStation">106 - ASZ Asten</div>
         </div>
         
-        <!-- Tab-Umschalter -->
         <div class="mode-switcher">
             <div id="tabSelect" class="mode-tab active" onclick="switchMode('select')">Sortiment-Auswahl</div>
             <div id="tabInput" class="mode-tab" onclick="switchMode('input')">Freie Eingabe (Sofort-Vorschau)</div>
         </div>
         
-        <!-- SEKTION 1: AUSWAHL-MODUS -->
         <div id="sectionSelect" class="form-section active">
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label for="sortimentSelect">Abfallart aus Sortiment wählen:</label>
                     <select id="sortimentSelect" onchange="handlePresetSelection()">
-                        <!-- Wird dynamisch durch JS befüllt -->
-                    </select>
+                        </select>
                 </div>
             </div>
         </div>
 
-        <!-- SEKTION 2: MANUELLER INPUT-MODUS -->
         <div id="sectionInput" class="form-section">
             <div class="form-grid">
                 <div class="form-group">
@@ -422,16 +427,13 @@
         </div>
     </div>
 
-    <!-- FLOATING SETTINGS BUTTON (RECHTS UNTEN) -->
     <div class="floating-settings-btn" onclick="openSettings()" title="Druck- und Bogeneinstellungen öffnen">
-        <!-- Modernes SVG Zahnrad-Icon -->
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
     </div>
 
-    <!-- SETTINGS MODAL PAGE -->
     <div id="settingsModal" class="modal-backdrop" onclick="closeSettingsViaBackdrop(event)">
         <div class="modal-content">
             <div class="modal-header">Bogen- & Seiteneinstellungen</div>
@@ -453,17 +455,16 @@
                 </div>
             </div>
 
-            <button class="modal-close-btn" onclick="closeSettings()">Schließen & Ansicht übernehmen</button>
+            <button id="btnSaveDefaults" class="btn-save-defaults" onclick="saveDefaults()">Als Standard speichern</button>
+            <button class="modal-close-btn" onclick="closeSettings()">Schließen</button>
         </div>
     </div>
 
     <div class="preview-title">Live-Druckvorschau (A4-Bogen)</div>
 
-    <!-- Das simulierte A4-Blatt -->
     <div class="page-container">
         <div class="print-sheet" id="labelSheet">
-            <!-- Inhalt wird dynamisch generiert -->
-        </div>
+            </div>
     </div>
 
     <script>
@@ -491,7 +492,7 @@
 
         window.onload = function() {
             initDropdown();
-            handlePresetSelection();
+            loadDefaults();
         };
 
         function initDropdown() {
@@ -551,6 +552,71 @@
             }
         }
 
+        /* NEU: LocalStorage Funktionen für Standardwerte */
+        function saveDefaults() {
+            const defaults = {
+                topText: document.getElementById('inputTop').value,
+                count: document.getElementById('inputCount').value,
+                startPos: document.getElementById('inputStartPos').value,
+                modus: aktuellerModus,
+                sortimentIndex: document.getElementById('sortimentSelect').value,
+                artNr: document.getElementById('inputArtNr').value,
+                suffix: document.getElementById('inputSuffix').value,
+                bezeichnung: document.getElementById('inputBezeichnung').value
+            };
+            
+            localStorage.setItem('lavu_studio_defaults', JSON.stringify(defaults));
+            
+            // UI Feedback
+            const btn = document.getElementById('btnSaveDefaults');
+            btn.innerHTML = '✓ Als Standard gespeichert!';
+            btn.style.backgroundColor = '#27ae60';
+            
+            setTimeout(() => {
+                btn.innerHTML = 'Als Standard speichern';
+                btn.style.backgroundColor = '#2980b9';
+            }, 2000);
+        }
+
+        function loadDefaults() {
+            const saved = localStorage.getItem('lavu_studio_defaults');
+            
+            if (saved) {
+                try {
+                    const defaults = JSON.parse(saved);
+                    
+                    if (defaults.topText !== undefined) {
+                        document.getElementById('inputTop').value = defaults.topText;
+                        document.getElementById('headerStation').innerHTML = defaults.topText;
+                    }
+                    if (defaults.count !== undefined) document.getElementById('inputCount').value = defaults.count;
+                    if (defaults.startPos !== undefined) document.getElementById('inputStartPos').value = defaults.startPos;
+                    
+                    if (defaults.artNr !== undefined) document.getElementById('inputArtNr').value = defaults.artNr;
+                    if (defaults.suffix !== undefined) document.getElementById('inputSuffix').value = defaults.suffix;
+                    if (defaults.bezeichnung !== undefined) document.getElementById('inputBezeichnung').value = defaults.bezeichnung;
+                    
+                    if (defaults.sortimentIndex !== undefined) {
+                        document.getElementById('sortimentSelect').value = defaults.sortimentIndex;
+                    }
+                    
+                    if (defaults.modus) {
+                        switchMode(defaults.modus);
+                        // Falls wir im Select-Modus geladen haben, müssen wir den automatischen Preset-Override verhindern:
+                        if(defaults.modus === 'select') {
+                            updatePreview();
+                        }
+                    }
+                } catch (e) {
+                    console.error("Fehler beim Laden der Standardeinstellungen", e);
+                    handlePresetSelection();
+                }
+            } else {
+                // Keine Standards vorhanden -> Lade ersten Eintrag
+                handlePresetSelection();
+            }
+        }
+
         function updatePreview() {
             const sheet = document.getElementById('labelSheet');
             sheet.innerHTML = '';
@@ -559,6 +625,9 @@
             const artNr = document.getElementById('inputArtNr').value;
             const suffix = document.getElementById('inputSuffix').value;
             const bezeichnung = document.getElementById('inputBezeichnung').value;
+            
+            // Live-Update der UI-Kopfzeile oben rechts
+            document.getElementById('headerStation').innerHTML = topText;
             
             const count = Math.max(1, parseInt(document.getElementById('inputCount').value) || 1);
             const startPos = Math.max(1, parseInt(document.getElementById('inputStartPos').value) || 1);
