@@ -3,86 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAVU OÖ - Etiketten-Druckstudio</title>
+    <title>LAVU OÖ - Etiketten-Druckstudio v7</title>
     <style>
         /* ==========================================
            BENUTZEROBERFLÄCHE (Wird nicht gedruckt)
            ========================================== */
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f3f6;
+            background-color: #f4f7f9;
             margin: 0;
-            padding: 25px;
-            color: #2c3e50;
-            padding-bottom: 80px;
-        }
-
-        /* Haupt-Layout: Flexbox für Steuerung + Mini-Vorschau */
-        .main-layout-container {
-            display: flex;
-            max-width: 1150px;
-            margin: 0 auto;
-            gap: 25px;
-            align-items: flex-start;
-        }
-
-        .no-print-container {
-            flex: 1;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Sidebar für die neue Mini-Druckvorschau */
-        .sidebar-preview-container {
-            background: #ffffff;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            color: #2c3e50;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            width: 200px;
+            min-height: 100vh;
             box-sizing: border-box;
         }
 
-        .sidebar-title {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #7f8c8d;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 15px;
-            text-align: center;
+        .main-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 750px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(26, 75, 96, 0.08);
+            padding: 35px;
+            box-sizing: border-box;
+            border: 1px solid #eef2f5;
+            position: relative;
         }
 
-        /* Interaktiver Miniatur-Bogen */
+        /* App-Header mit Logo & Dynamic Right Text */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .app-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .app-header-title {
+            color: #1a4b60;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .app-header-subtitle {
+            font-size: 0.85rem;
+            color: #6cb4db;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-top: 3px;
+        }
+
+        .app-header-right {
+            color: #27ae60;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #e8f8f5;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            box-shadow: 0 2px 6px rgba(39, 174, 96, 0.04);
+        }
+
+        /* Integriertes Hauptlayout: Dashboard-Struktur */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 35px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Linke Spalte: Integrierte Miniaturansicht */
+        .preview-sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .thumbnail-wrapper {
             position: relative;
-            width: 154px;   /* 210mm * 0.18 Faktor */
-            height: 218px;  /* 297mm * 0.18 Faktor */
+            width: 168px;   /* 210mm * 0.20 Faktor */
+            height: 238px;  /* 297mm * 0.20 Faktor */
             border: 1px solid #cbd5e1;
             background: white;
-            border-radius: 6px;
+            border-radius: 8px;
             overflow: hidden;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            transition: all 0.25s ease;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .thumbnail-wrapper:hover {
-            transform: scale(1.04);
-            box-shadow: 0 8px 22px rgba(0,0,0,0.15);
-            border-color: #27ae60;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(26, 75, 96, 0.15);
+            border-color: #1a4b60;
         }
 
         .scaled-sheet-container {
-            transform: scale(0.18);
+            transform: scale(0.20);
             transform-origin: top left;
             width: 210mm;
             height: 297mm;
-            pointer-events: none; /* Klicks abfangen */
+            pointer-events: none;
         }
 
         .thumbnail-overlay {
@@ -95,64 +148,176 @@
             font-size: 0.75rem;
             font-weight: bold;
             text-align: center;
-            padding: 7px 0;
+            padding: 8px 0;
             transition: background 0.2s;
             backdrop-filter: blur(2px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
         }
 
         .thumbnail-wrapper:hover .thumbnail-overlay {
             background: rgba(39, 174, 96, 0.95);
         }
 
-        /* App-Header mit Logo & Dynamic Right Text */
-        .app-header {
+        /* Rechte Spalte: Detail-Zusammenfassung & Aktionen */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .info-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .summary-box {
+            background: #f8fafc;
+            border-left: 4px solid #6cb4db;
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 25px;
+            border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-item {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #334155;
+        }
+        .summary-item:last-child { margin-bottom: 0; }
+        .summary-label { font-weight: 600; color: #1a4b60; width: 110px; display: inline-block; }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: #27ae60;
+            color: white;
+            flex: 2;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #219653;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-secondary {
+            background-color: #1a4b60;
+            color: white;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(26, 75, 96, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background-color: #113342;
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================
+           MODALS & STRUKTUREN (Settings & Tabs)
+           ========================================== */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 34, 43, 0.55);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 92%;
+            max-width: 580px;
+            box-shadow: 0 20px 40px rgba(15, 34, 43, 0.2);
+            position: relative;
+        }
+
+        .preview-modal-content {
+            max-width: 230mm;
+            max-height: 94vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 30px;
+        }
+
+        .modal-body-scroll {
+            overflow-y: auto;
+            flex: 1;
+            padding: 25px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .modal-header {
+            font-size: 1.35rem;
+            font-weight: bold;
+            color: #1a4b60;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid #6cb4db;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
         }
 
-        .app-header-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        .btn-close-x {
+            background: transparent;
+            font-size: 1.8rem;
+            color: #94a3b8;
+            padding: 0;
+            cursor: pointer;
+            line-height: 1;
         }
+        .btn-close-x:hover { color: #ef4444; }
 
-        .app-header-title {
-            color: #1a4b60;
-            font-size: 1.4rem;
-            font-weight: bold;
-            line-height: 1.1;
-        }
-
-        .app-header-subtitle {
-            font-size: 0.85rem;
-            color: #6cb4db;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
-
-        .app-header-right {
-            color: #27ae60;
-            font-size: 1.25rem;
-            font-weight: bold;
-            text-align: right;
-            background: #e8f8f5;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border-left: 4px solid #27ae60;
-        }
-
+        /* Tabs innerhalb der Einstellungen */
         .mode-switcher {
             display: flex;
-            background: #e8ecef;
+            background: #f1f5f9;
             padding: 4px;
             border-radius: 8px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
         }
 
         .mode-tab {
@@ -164,18 +329,22 @@
             cursor: pointer;
             border-radius: 6px;
             transition: all 0.2s ease;
-            color: #5d6d7e;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .mode-tab.active {
             background: #1a4b60;
             color: white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 6px rgba(26, 75, 96, 0.15);
         }
 
         .form-section {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
         }
 
         .form-section.active {
@@ -183,15 +352,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .form-group {
@@ -204,198 +373,63 @@
         }
 
         label {
-            font-size: 0.88rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
             margin-bottom: 6px;
-            color: #34495e;
+            color: #475569;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         input, select {
             padding: 11px 14px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #334155;
             background-color: #f8fafc;
-            transition: border-color 0.2s, background-color 0.2s;
+            transition: all 0.2s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #6cb4db;
             background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(108, 180, 219, 0.15);
         }
-
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 20px;
-        }
-
-        button {
-            padding: 12px 28px;
-            font-size: 1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: #27ae60;
-            color: white;
-            box-shadow: 0 3px 8px rgba(39, 174, 96, 0.2);
-        }
-
-        .btn-primary:hover {
-            background-color: #219653;
-            transform: translateY(-1px);
-        }
-
-        /* Responsive Layout Anpassung */
-        @media (max-width: 900px) {
-            .main-layout-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .sidebar-preview-container {
-                width: auto;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .sidebar-title { margin-bottom: 0; }
-        }
-
-        /* ==========================================
-           MODALS (Settings & Live-Druckvorschau)
-           ========================================== */
-        .modal-backdrop {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(44, 62, 80, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.2s ease;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 550px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        /* Spezifische Maße für das große Vorschau-Modal */
-        .preview-modal-content {
-            max-width: 230mm;
-            max-height: 92vh;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 30px;
-        }
-
-        .modal-body-scroll {
-            overflow-y: auto;
-            flex: 1;
-            padding: 20px;
-            background: #e8ecef;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        .modal-header {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #1a4b60;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-close-x {
-            background: transparent;
-            font-size: 1.6rem;
-            color: #95a5a6;
-            padding: 0;
-            cursor: pointer;
-        }
-        .btn-close-x:hover { color: #c0392b; }
 
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 15px;
-            margin-top: 15px;
-            border-top: 1px solid #e2e8f0;
+            gap: 12px;
+            margin-top: 20px;
+            border-top: 1px solid #f1f5f9;
             padding-top: 15px;
         }
 
-        .floating-settings-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 56px;
-            height: 56px;
-            background-color: #1a4b60;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            z-index: 999;
-        }
-
-        .floating-settings-btn:hover {
-            transform: rotate(45deg) scale(1.05);
-            background-color: #113342;
-        }
-
         .btn-save-defaults {
-            background-color: #2980b9;
+            background-color: #3498db;
             color: white;
-            margin-top: 20px;
-            width: 100%;
         }
-        .btn-save-defaults:hover { background-color: #2471a3; }
+        .btn-save-defaults:hover { background-color: #2980b9; }
 
-        .modal-close-btn {
-            background-color: #7f8c8d;
-            color: white;
-            margin-top: 10px;
-            width: 100%;
+        .btn-cancel {
+            background-color: #f1f5f9;
+            color: #475569;
         }
-        .modal-close-btn:hover { background-color: #6c7a7d; }
+        .btn-cancel:hover { background-color: #e2e8f0; }
 
         /* ==========================================
-           DRUCK-RASTER & ETIKETTEN-DESIGN (Avery 27)
+           DRUCK-RASTER & Avery 27 ETIKETTEN-DESIGN
            ========================================== */
         .page-container {
             background: #ffffff;
             width: 210mm;
             height: 297mm;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.12);
             box-sizing: border-box;
         }
 
@@ -475,41 +509,44 @@
         }
 
         .label.empty {
-            border: 1px dashed #f1f5f9;
-            background-color: #f8fafc;
+            border: 1px dashed #f8fafc;
+            background-color: #fafbfc;
+        }
+
+        /* Versteckter Container für direkten Druck außerhalb des Modals */
+        #hiddenPrintContainer {
+            display: none;
+        }
+
+        /* Responsive Layout Anpassung */
+        @media (max-width: 700px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .preview-sidebar {
+                order: -1;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
         }
 
         /* ==========================================
            REINE DRUCKEINSTELLUNGEN (@media print)
            ========================================== */
         @media print {
-            /* Alles ausblenden außer das aktive Druckblatt */
             body * {
                 display: none !important;
             }
-            #previewModal, #previewModal *, .modal-body-scroll, .page-container, #labelSheet, #labelSheet * {
+            #hiddenPrintContainer, #hiddenPrintContainer *, #labelSheetDirect, #labelSheetDirect * {
                 display: block !important;
             }
-            #labelSheet {
+            #labelSheetDirect {
                 display: grid !important;
-            }
-            #previewModal {
-                position: static !important;
-                background: none !important;
-                backdrop-filter: none !important;
-                padding: 0 !important;
-            }
-            .preview-modal-content {
-                box-shadow: none !important;
-                padding: 0 !important;
-                max-width: none !important;
-                max-height: none !important;
-            }
-            .modal-body-scroll {
-                background: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                overflow: visible !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
             }
             .page-container {
                 box-shadow: none !important;
@@ -529,90 +566,84 @@
 </head>
 <body>
 
-    <div class="main-layout-container">
+    <div class="main-card">
         
-        <div class="no-print-container">
-            <div class="app-header">
-                <div class="app-header-left">
-                    <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="46" fill="#1a4b60"/>
-                        <path d="M34 68 L50 32 L66 68 Z" stroke="#6cb4db" stroke-width="7" stroke-linejoin="round" fill="none"/>
-                        <path d="M41 53 L59 53" stroke="#6cb4db" stroke-width="6" stroke-linecap="round"/>
-                        <path d="M22 36 Q50 12 78 36" stroke="#27ae60" stroke-width="6" stroke-linecap="round" fill="none"/>
-                    </svg>
-                    <div>
-                        <div class="app-header-title">LAVU OÖ</div>
-                        <div class="app-header-subtitle">Etiketten-Druckstudio</div>
-                    </div>
-                </div>
-                <div class="app-header-right" id="headerStation">106 - ASZ Asten</div>
-            </div>
-            
-            <div class="mode-switcher">
-                <div id="tabSelect" class="mode-tab active" onclick="switchMode('select')">Sortiment-Auswahl</div>
-                <div id="tabInput" class="mode-tab" onclick="switchMode('input')">Freie Eingabe</div>
-            </div>
-            
-            <div id="sectionSelect" class="form-section active">
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label for="sortimentSelect">Abfallart aus Sortiment wählen:</label>
-                        <select id="sortimentSelect" onchange="handlePresetSelection()">
-                            </select>
-                    </div>
+        <div class="app-header">
+            <div class="app-header-left">
+                <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="46" fill="#1a4b60"/>
+                    <path d="M34 68 L50 32 L66 68 Z" stroke="#6cb4db" stroke-width="7" stroke-linejoin="round" fill="none"/>
+                    <path d="M41 53 L59 53" stroke="#6cb4db" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M22 36 Q50 12 78 36" stroke="#27ae60" stroke-width="6" stroke-linecap="round" fill="none"/>
+                </svg>
+                <div>
+                    <div class="app-header-title">LAVU OÖ</div>
+                    <div class="app-header-subtitle">Etiketten-Druckstudio</div>
                 </div>
             </div>
-
-            <div id="sectionInput" class="form-section">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="inputArtNr">Artikel-Nr. (Mitte links):</label>
-                        <input type="text" id="inputArtNr" value="4040" oninput="updatePreview()">
+            <div class="app-header-right" id="headerStation">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></circle><circle cx="12" cy="10" r="3"></circle></svg>
+                <span id="headerStationText">106 - ASZ Asten</span>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            
+            <div class="preview-sidebar">
+                <div class="sidebar-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Live-Vorschau
+                </div>
+                <div class="thumbnail-wrapper" onclick="openPreviewModal()" title="Klicken für vollständige A4-Großansicht">
+                    <div class="scaled-sheet-container">
+                        <div class="print-sheet" id="thumbnailSheet">
+                            </div>
                     </div>
+                    <div class="thumbnail-overlay">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        Großansicht
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="info-title">Aktuelle Konfiguration</div>
+                
+                <div class="summary-box">
+                    <div class="summary-item"><span class="summary-label">Abfallart:</span> <span id="sumBezeichnung">-</span></div>
+                    <div class="summary-item"><span class="summary-label">Artikel-Nr:</span> <span id="sumArtNr">-</span></div>
+                    <div class="summary-item"><span class="summary-label">Zusatztext:</span> <span id="sumSuffix">-</span></div>
+                    <div class="summary-item"><span class="summary-label">Menge / Start:</span> <span id="sumMenge">-</span></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="triggerDirectPrint()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        Jetzt Ausdrucken
+                    </button>
                     
-                    <div class="form-group">
-                        <label for="inputSuffix">Zusatz Mitte (rechts):</label>
-                        <input type="text" id="inputSuffix" value="QR-Box" oninput="updatePreview()">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="inputBezeichnung">Bezeichnung unten:</label>
-                        <input type="text" id="inputBezeichnung" value="Elektro-Kleingeräte (ohne Akku)" oninput="updatePreview()">
-                    </div>
+                    <button class="btn-secondary" onclick="openSettings()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Einstellungen
+                    </button>
                 </div>
             </div>
-
-            <div class="btn-group">
-                <button class="btn-primary" onclick="openPreviewModal()">Großansicht öffnen & Drucken</button>
-            </div>
+            
         </div>
-
-        <div class="sidebar-preview-container">
-            <div class="sidebar-title">Mini-Vorschau</div>
-            <div class="thumbnail-wrapper" onclick="openPreviewModal()" title="Klicken für vollständige A4-Großansicht">
-                <div class="scaled-sheet-container">
-                    <div class="print-sheet" id="thumbnailSheet">
-                        </div>
-                </div>
-                <div class="thumbnail-overlay">🔍 Bogen öffnen</div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="floating-settings-btn" onclick="openSettings()" title="Bogen- und Standorteinstellungen öffnen">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
     </div>
 
     <div id="settingsModal" class="modal-backdrop" onclick="closeSettingsViaBackdrop(event)">
         <div class="modal-content">
-            <div class="modal-header">System- & Bogeneinstellungen</div>
+            <div class="modal-header">
+                <span>Druck- & Standorteinstellungen</span>
+                <button class="btn-close-x" onclick="closeSettings()">&times;</button>
+            </div>
             
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label for="inputTop">Standort (ASZ Niederlassung OÖ):</label>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="inputTop">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Standort (ASZ Niederlassung OÖ):
+                </label>
                 <select id="inputTop" onchange="updatePreview()">
                     <optgroup label="Bezirk Linz-Land">
                         <option value="106 - ASZ Asten" selected>106 - ASZ Asten</option>
@@ -719,41 +750,100 @@
                 </select>
             </div>
 
-            <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 0;">
+            <div class="form-grid">
                 <div class="form-group">
-                    <label for="inputCount">Anzahl Etiketten:</label>
+                    <label for="inputCount">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>
+                        Anzahl Etiketten:
+                    </label>
                     <input type="number" id="inputCount" value="9" min="1" max="27" oninput="updatePreview()">
                 </div>
 
                 <div class="form-group">
-                    <label for="inputStartPos">Start-Position (1-27):</label>
+                    <label for="inputStartPos">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        Start-Position (1-27):
+                    </label>
                     <input type="number" id="inputStartPos" value="1" min="1" max="27" oninput="updatePreview()">
                 </div>
             </div>
 
-            <button id="btnSaveDefaults" class="btn-save-defaults" onclick="saveDefaults()">Als Standard speichern</button>
-            <button class="modal-close-btn" onclick="closeSettings()">Schließen</button>
+            <div class="mode-switcher">
+                <div id="tabSelect" class="mode-tab active" onclick="switchMode('select')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    Sortiment-Auswahl
+                </div>
+                <div id="tabInput" class="mode-tab" onclick="switchMode('input')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"></path></svg>
+                    Freie Eingabe
+                </div>
+            </div>
+            
+            <div id="sectionSelect" class="form-section active">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="sortimentSelect">Abfallart aus Sortiment wählen:</label>
+                    <select id="sortimentSelect" onchange="handlePresetSelection()">
+                        </select>
+                </div>
+            </div>
+
+            <div id="sectionInput" class="form-section">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="inputArtNr">Artikel-Nr.:</label>
+                        <input type="text" id="inputArtNr" value="4040" oninput="updatePreview()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inputSuffix">Zusatz Mitte:</label>
+                        <input type="text" id="inputSuffix" value="QR-Box" oninput="updatePreview()">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inputBezeichnung">Bezeichnung unten:</label>
+                        <input type="text" id="inputBezeichnung" value="Elektro-Kleingeräte (ohne Akku)" oninput="updatePreview()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnSaveDefaults" class="btn-save-defaults" onclick="saveDefaults()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    Standard sichern
+                </button>
+                <button class="btn-cancel" onclick="closeSettings()">Fertig</button>
+            </div>
         </div>
     </div>
 
     <div id="previewModal" class="modal-backdrop" onclick="closePreviewModalViaBackdrop(event)">
         <div class="modal-content preview-modal-content">
             <div class="modal-header">
-                <span>Druckvorschau (A4-Bogen - Avery 27er Layout)</span>
+                <span>Vollbild-Druckvorschau (A4-Bogen - Avery 27er Layout)</span>
                 <button class="btn-close-x" onclick="closePreviewModal()">&times;</button>
             </div>
             
             <div class="modal-body-scroll">
                 <div class="page-container">
-                    <div class="print-sheet" id="labelSheet">
+                    <div class="print-sheet" id="labelSheetModal">
                         </div>
                 </div>
             </div>
             
             <div class="modal-footer">
-                <button class="btn-primary" onclick="window.print()">Jetzt Drucken (STRG + P)</button>
-                <button class="modal-close-btn" onclick="closePreviewModal()" style="margin-top: 0; width: auto; padding: 12px 24px;">Schließen</button>
+                <button class="btn-primary" onclick="window.print()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Jetzt Ausdrucken
+                </button>
+                <button class="btn-cancel" onclick="closePreviewModal()">Schließen</button>
             </div>
+        </div>
+    </div>
+
+    <div id="hiddenPrintContainer">
+        <div class="page-container">
+            <div class="print-sheet" id="labelSheetDirect">
+                </div>
         </div>
     </div>
 
@@ -794,7 +884,7 @@
             sortimentData.forEach((item, index) => {
                 let opt = document.createElement('option');
                 opt.value = index;
-                opt.innerHTML = `[${item.artNr}] ${item.bez} → (${item.zusatzMitte})`;
+                opt.innerHTML = `[${item.artNr}] ${item.bez}`;
                 select.appendChild(opt);
             });
         }
@@ -843,6 +933,11 @@
             if (event.target.id === 'previewModal') closePreviewModal();
         }
 
+        /* Direktes Drucken ausführen */
+        function triggerDirectPrint() {
+            window.print();
+        }
+
         /* LocalStorage Datensicherung (Defaults) */
         function saveDefaults() {
             const defaults = {
@@ -856,29 +951,26 @@
                 bezeichnung: document.getElementById('inputBezeichnung').value
             };
             
-            localStorage.setItem('lavu_studio_defaults', JSON.stringify(defaults));
+            localStorage.setItem('lavu_studio_defaults_v7', JSON.stringify(defaults));
             
             const btn = document.getElementById('btnSaveDefaults');
-            btn.innerHTML = '✓ Als Standard gespeichert!';
+            btn.innerHTML = '✓ Gespeichert!';
             btn.style.backgroundColor = '#27ae60';
             
             setTimeout(() => {
-                btn.innerHTML = 'Als Standard speichern';
-                btn.style.backgroundColor = '#2980b9';
-            }, 2000);
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Standard sichern';
+                btn.style.backgroundColor = '#3498db';
+            }, 1800);
         }
 
         function loadDefaults() {
-            const saved = localStorage.getItem('lavu_studio_defaults');
+            const saved = localStorage.getItem('lavu_studio_defaults_v7');
             
             if (saved) {
                 try {
                     const defaults = JSON.parse(saved);
                     
-                    if (defaults.topText !== undefined) {
-                        document.getElementById('inputTop').value = defaults.topText;
-                        document.getElementById('headerStation').innerHTML = defaults.topText;
-                    }
+                    if (defaults.topText !== undefined) document.getElementById('inputTop').value = defaults.topText;
                     if (defaults.count !== undefined) document.getElementById('inputCount').value = defaults.count;
                     if (defaults.startPos !== undefined) document.getElementById('inputStartPos').value = defaults.startPos;
                     
@@ -886,16 +978,15 @@
                     if (defaults.suffix !== undefined) document.getElementById('inputSuffix').value = defaults.suffix;
                     if (defaults.bezeichnung !== undefined) document.getElementById('inputBezeichnung').value = defaults.bezeichnung;
                     
-                    if (defaults.sortimentIndex !== undefined) {
-                        document.getElementById('sortimentSelect').value = defaults.sortimentIndex;
-                    }
+                    if (defaults.sortimentIndex !== undefined) document.getElementById('sortimentSelect').value = defaults.sortimentIndex;
                     
                     if (defaults.modus) {
                         switchMode(defaults.modus);
-                        if(defaults.modus === 'select') updatePreview();
+                    } else {
+                        updatePreview();
                     }
                 } catch (e) {
-                    console.error("Fehler beim Laden der Standardeinstellungen", e);
+                    console.error("Fehler beim Laden", e);
                     handlePresetSelection();
                 }
             } else {
@@ -903,25 +994,32 @@
             }
         }
 
-        /* Gekoppeltes Render-System für Miniatur- und Großbildvorschau */
+        /* Gekoppeltes Render-System für alle 3 Ausgabe-Raster */
         function updatePreview() {
-            const labelSheet = document.getElementById('labelSheet');
             const thumbnailSheet = document.getElementById('thumbnailSheet');
+            const labelSheetModal = document.getElementById('labelSheetModal');
+            const labelSheetDirect = document.getElementById('labelSheetDirect');
             
-            // Vorherigen Inhalt leeren
-            labelSheet.innerHTML = '';
+            // Vorherige Inhalte leeren
             thumbnailSheet.innerHTML = '';
+            labelSheetModal.innerHTML = '';
+            labelSheetDirect.innerHTML = '';
 
             const topText = document.getElementById('inputTop').value;
             const artNr = document.getElementById('inputArtNr').value;
             const suffix = document.getElementById('inputSuffix').value;
             const bezeichnung = document.getElementById('inputBezeichnung').value;
             
-            // Header-Live-Update (Anzeige oben rechts)
-            document.getElementById('headerStation').innerHTML = topText;
+            // Header- & Info-Zusammenfassung Live-Updates
+            document.getElementById('headerStationText').innerHTML = topText;
+            document.getElementById('sumBezeichnung').innerHTML = bezeichnung;
+            document.getElementById('sumArtNr').innerHTML = artNr;
+            document.getElementById('sumSuffix').innerHTML = suffix;
             
             const count = Math.max(1, parseInt(document.getElementById('inputCount').value) || 1);
             const startPos = Math.max(1, parseInt(document.getElementById('inputStartPos').value) || 1);
+            
+            document.getElementById('sumMenge').innerHTML = `${count}x (ab Position ${startPos})`;
 
             let HTMLContent = '';
 
@@ -932,7 +1030,7 @@
 
             // 2. Zu druckende Etiketten generieren
             for (let i = 0; i < count; i++) {
-                if ((startPos - 1 + i) >= 27) break; // Limitierung bei maximal 27 Zellen
+                if ((startPos - 1 + i) >= 27) break;
 
                 HTMLContent += `
                     <div class="label">
@@ -947,16 +1045,17 @@
                 `;
             }
 
-            // 3. Den Rest des 27er Avery-Rasters auffüllen
+            // 3. Den Rest auffüllen
             let currentCells = startPos - 1 + count;
             while (currentCells < 27) {
                 HTMLContent += `<div class="label empty"></div>`;
                 currentCells++;
             }
 
-            // Beide Raster gleichzeitig bespielen (Spart Ressourcen, garantiert 100% identische Darstellung)
-            labelSheet.innerHTML = HTMLContent;
+            // Alle Raster parallel synchronisieren
             thumbnailSheet.innerHTML = HTMLContent;
+            labelSheetModal.innerHTML = HTMLContent;
+            labelSheetDirect.innerHTML = HTMLContent;
         }
     </script>
 </body>
