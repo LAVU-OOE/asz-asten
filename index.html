@@ -1,16 +1,9 @@
-<!--# Let's create an elegant, interactive HTML/CSS/JS dashboard that implements both:
-# 1. A Terminal interface for printing labels (Etikettendruck Terminal)
-# 2. An Office Dashboard with a cargo list of all printed labels (Office Dashboard mit Frachtliste)
-# The application will be completely self-contained in a single HTML file with CSS and JS.
-# It will have a modern, clean, premium UI with a beautiful color palette (cool slate grey & professional blue).
-
-html_content = """-->
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistik-Zentrum: Etikettendruck & Dashboard</title>
+    <title>ASZ Logistik: Terminal & Dashboard</title>
     <style>
         :root {
             --bg-primary: #f4f6f9;
@@ -23,14 +16,13 @@ html_content = """-->
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
             --success: #10b981;
-            --warning: #f59e0b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
@@ -41,7 +33,7 @@ html_content = """-->
             overflow: hidden;
         }
 
-        /* Sidebar Navigation */
+        /* Seitennavigation */
         .sidebar {
             width: 260px;
             background-color: var(--sidebar-bg);
@@ -106,7 +98,7 @@ html_content = """-->
             padding-top: 16px;
         }
 
-        /* Main Content Workspace */
+        /* Hauptinhalt */
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -155,10 +147,9 @@ html_content = """-->
             display: block;
         }
 
-        /* Cards Layout */
         .grid-2 {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.1fr;
             gap: 24px;
         }
 
@@ -180,7 +171,7 @@ html_content = """-->
             padding-bottom: 10px;
         }
 
-        /* Form Controls */
+        /* Formular-Elemente */
         .form-group {
             margin-bottom: 16px;
         }
@@ -228,75 +219,92 @@ html_content = """-->
             background-color: var(--accent-hover);
         }
 
-        /* Label Live Preview Box */
+        /* Vorschau-Bereich */
         .preview-box {
             background: #f8fafc;
             border: 2px dashed #cbd5e1;
-            border-radius: 8px;
-            min-height: 280px;
+            border-radius: 12px;
+            min-height: 340px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            padding: 16px;
         }
 
-        /* Realistic Thermal Label Style */
-        .thermal-label {
+        /* ORIGINAL-DESIGN NACHBILDUNG (image_ac1198.png) */
+        .modern-premium-label {
             width: 100%;
-            max-width: 320px;
-            background: white;
-            border: 1px solid #000;
-            padding: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            font-family: 'Courier New', Courier, monospace;
-            color: #000;
+            max-width: 440px;
+            background-color: #0b1d28;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 12px 24px rgba(11, 29, 40, 0.3);
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            aspect-ratio: 1.65 / 1;
         }
 
-        .label-header {
-            border-bottom: 2px solid #000;
-            padding-bottom: 6px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            letter-spacing: 1px;
-        }
-
-        .label-body {
-            margin: 14px 0;
+        .label-badge-top {
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 3px 12px;
+            border-radius: 20px;
             font-size: 13px;
-            line-height: 1.4;
+            color: #728a96;
+            font-weight: 500;
         }
 
-        .label-row {
-            display: flex;
-            justify-content: space-between;
+        .label-main-content {
+            text-align: right;
+            margin-top: 14px;
+        }
+
+        .label-location {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
             margin-bottom: 4px;
         }
 
-        .label-row.bold {
-            font-weight: bold;
-            font-size: 14px;
+        .label-code-row {
+            font-size: 34px;
+            font-weight: 700;
+            color: #49a5e9;
         }
 
-        .barcode-container {
-            text-align: center;
-            margin-top: 10px;
+        .label-type-modifier {
+            font-size: 18px;
+            font-weight: 400;
+            color: #637b88;
         }
 
-        .dummy-barcode {
-            letter-spacing: 4px;
-            font-weight: bold;
-            background: linear-gradient(90deg, #000 70%, transparent 70%);
-            background-size: 4px 100%;
-            height: 40px;
-            width: 80%;
-            margin: 0 auto 4px auto;
+        .label-description {
+            font-size: 18px;
+            color: #8fa3ae;
+            font-weight: 400;
+            margin-top: 4px;
         }
 
-        /* Dashboard KPI Stats */
+        .label-action-pill {
+            align-self: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 22px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #556c7a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: auto;
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Dashboard KPIs */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -326,7 +334,7 @@ html_content = """-->
             color: #0f172a;
         }
 
-        /* Office Data Table (Frachtliste) */
+        /* Register-Tabelle */
         .table-responsive {
             overflow-x: auto;
         }
@@ -367,7 +375,7 @@ html_content = """-->
         .badge-success { background-color: #e6f4ea; color: #137333; }
         .badge-info { background-color: #e8f0fe; color: #1a73e8; }
 
-        /* Print styling overrides */
+        /* Druckoptimierung */
         @media print {
             body * {
                 visibility: hidden;
@@ -377,13 +385,11 @@ html_content = """-->
             }
             #printArea {
                 position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(1.3);
                 border: none;
                 box-shadow: none;
-                padding: 0;
-                margin: 0;
             }
         }
     </style>
@@ -408,8 +414,8 @@ html_content = """-->
             </ul>
         </div>
         <div class="sidebar-footer">
-            System v2.5.1 &copy; 2026<br>
-            ASZ Annahme- & Preisliste
+            System v2.5 &copy; 2026<br>
+            ASZ Annahme-Register
         </div>
     </div>
 
@@ -418,7 +424,7 @@ html_content = """-->
             <div class="page-title" id="page-title-text">Etikettendruck Terminal</div>
             <div class="system-status">
                 <span style="width: 8px; height: 8px; background-color: var(--success); border-radius: 50%; display: inline-block;"></span>
-                Drucker Online (Zebra ZT411)
+                Smart-Printer Online
             </div>
         </div>
 
@@ -430,260 +436,4 @@ html_content = """-->
                         <div class="card-title">Frachtdaten erfassen</div>
                         <form id="labelForm" onsubmit="generateLabel(event)">
                             <div class="form-group">
-                                <label for="artNo">Abfallart / Artikelnummer</label>
-                                <select id="artNo" class="form-control" onchange="updatePreselection()">
-                                    <option value="2100" data-name="Kartonagen (ARA-lizenziert)" data-cat="Verpackungen">2100 - Kartonagen (Verpackungen)</option>
-                                    <option value="2200" data-name="Metallverpackungen" data-cat="Verpackungen">2200 - Metallverpackungen (Verpackungen)</option>
-                                    <option value="3500" data-name="Altreifen (ohne Felgen)" data-cat="Altstoffe">3500 - Altreifen ohne Felgen (Altstoffe)</option>
-                                    <option value="4010" data-name="Elektro-Großgeräte" data-cat="Elektroaltgeräte">4010 - Elektro-Großgeräte</option>
-                                    <option value="4305" data-name="Altlacke & Werkstattabfälle" data-cat="Gefährliche Abfälle">4305 - Altlacke / Gefährlich</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="gewicht">Bruttogewicht (kg)</label>
-                                <input type="number" id="gewicht" class="form-control" value="120" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="spediteur">Spediteur / Transporteur</label>
-                                <input type="text" id="spediteur" class="form-control" value="LAVU Logistik GmbH" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="bemerkung">Zusatzinfo / Stellplatz</label>
-                                <input type="text" id="bemerkung" class="form-control" value="Box C-12 / Werkshof">
-                            </div>
-                            <button type="submit" class="btn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
-                                Etikett drucken & buchen
-                            </button>
-                        </form>
-                    </div>
-
-                    <div>
-                        <div class="card">
-                            <div class="card-title">Live-Vorschau (Thermodruck)</div>
-                            <div class="preview-box">
-                                <div class="thermal-label" id="printArea">
-                                    <div class="label-header">ASZ FRACHTBRIEF-ID</div>
-                                    <div class="label-body">
-                                        <div class="label-row bold">
-                                            <span>ART-NR:</span>
-                                            <span id="lblArt">2100</span>
-                                        </div>
-                                        <div class="label-row">
-                                            <span>Bezeichnung:</span>
-                                            <span id="lblBezeichnung" style="font-weight: bold;">Kartonagen</span>
-                                        </div>
-                                        <div class="label-row">
-                                            <span>Kategorie:</span>
-                                            <span id="lblKategorie">Verpackungen</span>
-                                        </div>
-                                        <hr style="border: 0; border-top: 1px dashed #000; margin: 8px 0;">
-                                        <div class="label-row bold" style="font-size: 16px;">
-                                            <span>GEWICHT:</span>
-                                            <span id="lblGewicht">120 kg</span>
-                                        </div>
-                                        <div class="label-row">
-                                            <span>Spedition:</span>
-                                            <span id="lblSpediteur">LAVU Logistik GmbH</span>
-                                        </div>
-                                        <div class="label-row">
-                                            <span>Datum:</span>
-                                            <span id="lblDatum">01.07.2026</span>
-                                        </div>
-                                        <div class="label-row">
-                                            <span>Ref-ID:</span>
-                                            <span id="lblRef">ASZ-98231-DE</span>
-                                        </div>
-                                    </div>
-                                    <div class="barcode-container">
-                                        <div class="dummy-barcode"></div>
-                                        <span id="lblBarcodeText" style="font-size: 11px;">*21001202026*</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="view-dashboard" class="view-panel">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-label">Etiketten Gesamt</span>
-                        <span class="stat-value" id="kpiTotal">3</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-label">Gesamtgewicht (Tonne)</span>
-                        <span class="stat-value" id="kpiWeight">1.42 t</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-label">Aktivität Heute</span>
-                        <span class="stat-value" style="color: var(--success);">Aktiv</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-label">Letzter Druck</span>
-                        <span class="stat-value" id="kpiLastTime" style="font-size: 16px; margin-top: 8px;">Gerade eben</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Zentrales Frachtregister (Gedruckte Etiketten)</div>
-                    <div class="table-responsive">
-                        <table class="fracht-table">
-                            <thead>
-                                <tr>
-                                    <th>Ref-ID</th>
-                                    <th>Datum/Zeit</th>
-                                    <th>Art.-Nr.</th>
-                                    <th>Bezeichnung</th>
-                                    <th>Gruppe</th>
-                                    <th>Gewicht</th>
-                                    <th>Transporteur</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fracht-table-body">
-                                <tr>
-                                    <td><strong>ASZ-49211-DE</strong></td>
-                                    <td>01.07.2026 09:15</td>
-                                    <td>4010</td>
-                                    <td>Elektro-Großgeräte</td>
-                                    <td><span class="badge badge-info">Elektroaltgeräte</span></td>
-                                    <td>850 kg</td>
-                                    <td>LAVU Logistik</td>
-                                    <td><span class="badge badge-success">Gebucht</span></td>
-                               Full filled by JS --!>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        // Default initial simulated log dataset
-        let cargoData = [
-            { id: "ASZ-88210-AT", time: "01.07.2026 08:30", art: "2100", name: "Kartonagen (ARA-lizenziert)", cat: "Verpackungen", weight: 450, carrier: "LAVU Logistik GmbH", status: "Gebucht" },
-            { id: "ASZ-88211-AT", time: "01.07.2026 09:15", art: "4010", name: "Elektro-Großgeräte", cat: "Elektroaltgeräte", weight: 850, carrier: "Ö.O. Landes-Abfall", status: "Gebucht" },
-            { id: "ASZ-88212-AT", time: "01.07.2026 11:02", art: "4305", name: "Altlacke & Werkstattabfälle", cat: "Gefährliche Abfälle", weight: 120, carrier: "Gewerbe-Entsorg.", status: "Gebucht" }
-        ];
-
-        function switchView(viewId, element) {
-            // Update active menu item
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
-
-            // Toggle screens
-            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
-
-            // Update title
-            const titleText = viewId === 'terminal' ? 'Etikettendruck Terminal' : 'Office Dashboard & Frachtliste';
-            document.getElementById('page-title-text').innerText = titleText;
-
-            if(viewId === 'dashboard') {
-                renderDashboard();
-            }
-        }
-
-        function updatePreselection() {
-            const select = document.getElementById('artNo');
-            const selectedOption = select.options[select.selectedIndex];
-            
-            document.getElementById('lblArt').innerText = select.value;
-            document.getElementById('lblBezeichnung').innerText = selectedOption.getAttribute('data-name');
-            document.getElementById('lblKategorie').innerText = selectedOption.getAttribute('data-cat');
-            
-            const weight = document.getElementById('gewicht').value || '0';
-            document.getElementById('lblBarcodeText').innerText = `*${select.value}${weight}*`;
-        }
-
-        function generateLabel(event) {
-            event.preventDefault();
-            
-            const select = document.getElementById('artNo');
-            const selectedOption = select.options[select.selectedIndex];
-            const weight = parseFloat(document.getElementById('gewicht').value);
-            const carrier = document.getElementById('spediteur').value;
-            
-            const randomId = "ASZ-" + Math.floor(10000 + Math.random() * 90000) + "-AT";
-            const now = new Date();
-            const timeStr = now.toLocaleDateString('de-DE') + " " + now.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'});
-
-            // Update Label fields
-            document.getElementById('lblArt').innerText = select.value;
-            document.getElementById('lblBezeichnung').innerText = selectedOption.getAttribute('data-name');
-            document.getElementById('lblKategorie').innerText = selectedOption.getAttribute('data-cat');
-            document.getElementById('lblGewicht').innerText = weight + " kg";
-            document.getElementById('lblSpediteur').innerText = carrier;
-            document.getElementById('lblDatum').innerText = timeStr.split(' ')[0];
-            document.getElementById('lblRef').innerText = randomId;
-            document.getElementById('lblBarcodeText').innerText = `*${select.value}${weight}*`;
-
-            // Append to Data List
-            cargoData.unshift({
-                id: randomId,
-                time: timeStr,
-                art: select.value,
-                name: selectedOption.getAttribute('data-name'),
-                cat: selectedOption.getAttribute('data-cat'),
-                weight: weight,
-                carrier: carrier,
-                status: "Gebucht"
-            });
-
-            // Trigger physical simulation print command
-            window.print();
-        }
-
-        function renderDashboard() {
-            const tbody = document.getElementById('fracht-table-body');
-            tbody.innerHTML = "";
-            
-            let totalWeight = 0;
-
-            cargoData.forEach(item => {
-                totalWeight += item.weight;
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${item.id}</strong></td>
-                    <td>${item.time}</td>
-                    <td>${item.art}</td>
-                    <td>${item.name}</td>
-                    <td><span class="badge ${getBadgeClass(item.cat)}">${item.cat}</span></td>
-                    <td><strong>${item.weight} kg</strong></td>
-                    <td>${item.carrier}</td>
-                    <td><span class="badge badge-success">${item.status}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            // Update KPIs
-            document.getElementById('kpiTotal').innerText = cargoData.length;
-            document.getElementById('kpiWeight').innerText = (totalWeight / 1000).toFixed(2) + " t";
-            if(cargoData.length > 0) {
-                document.getElementById('kpiLastTime').innerText = cargoData[0].time.split(' ')[1] + " Uhr";
-            }
-        }
-
-        function getBadgeClass(cat) {
-            if(cat === 'Verpackungen') return 'badge-info';
-            if(cat === 'Gefährliche Abfälle') return 'badge-success';
-            return 'badge-info';
-        }
-
-        // Init view data fields
-        updatePreselection();
-    </script>
-</body>
-</html>
-<!--
-"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
-print("File successfully created.")
--->
+                                <label for="
