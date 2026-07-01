@@ -14,6 +14,7 @@
             margin: 0;
             padding: 25px;
             color: #2c3e50;
+            padding-bottom: 80px; /* Platz für das Floating-Icon */
         }
 
         .no-print-container {
@@ -25,7 +26,6 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         }
 
-        /* Neuer zweigeteilter Header */
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -48,7 +48,6 @@
             font-weight: 600;
         }
 
-        /* Modus-Umschalter (Tabs) */
         .mode-switcher {
             display: flex;
             background: #e8ecef;
@@ -189,6 +188,77 @@
         }
 
         /* ==========================================
+           NEU: SETTINGS PAGE / MODAL & FLOATING ICON
+           ========================================== */
+        .floating-settings-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            background-color: #1a4b60;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 999;
+        }
+
+        .floating-settings-btn:hover {
+            transform: rotate(45deg) scale(1.05);
+            background-color: #113342;
+        }
+
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 62, 80, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-header {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1a4b60;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .modal-close-btn {
+            background-color: #1a4b60;
+            color: white;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .modal-close-btn:hover {
+            background-color: #113342;
+        }
+
+        /* ==========================================
            DRUCK-RASTER & ETIKETTEN-DESIGN (Avery 27)
            ========================================== */
         .print-sheet {
@@ -204,7 +274,6 @@
             page-break-after: always;
         }
 
-        /* Einzelnes Etikett */
         .label {
             width: 70mm;
             height: 32mm;
@@ -215,11 +284,10 @@
             justify-content: space-between;
             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
             background-color: #fff;
-            border: 1px dashed #e2e8f0; /* Sichtbare Stanzkanten im Browser */
+            border: 1px dashed #e2e8f0;
             overflow: hidden;
         }
 
-        /* Obere Zeile (ASZ Name + Nummer) */
         .label-top {
             text-align: right;
             font-size: 11pt;
@@ -228,7 +296,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* Mittlere Zeile (Artikelnummer + Suffix) */
         .label-middle {
             display: flex;
             align-items: baseline;
@@ -259,7 +326,6 @@
             color: #1a4b60;
         }
 
-        /* Untere Zeile (Bezeichnung) */
         .label-bottom {
             font-size: 11.5pt;
             color: #111111;
@@ -271,7 +337,6 @@
             letter-spacing: -0.1px;
         }
 
-        /* Platzhalter für angebrochene Bögen */
         .label.empty {
             border: 1px dashed #f1f5f9;
             background-color: #f8fafc;
@@ -281,7 +346,7 @@
            REINE DRUCKEINSTELLUNGEN (@media print)
            ========================================== */
         @media print {
-            .no-print-container, .preview-title {
+            .no-print-container, .preview-title, .floating-settings-btn, .modal-backdrop {
                 display: none !important;
             }
             body {
@@ -308,7 +373,7 @@
 
     <!-- Steuerungspanel (wird beim Drucken komplett ausgeblendet) -->
     <div class="no-print-container">
-        <!-- Neuer, zweigeteilter Headerbereich -->
+        <!-- Zweigeteilter Headerbereich -->
         <div class="app-header">
             <div class="app-header-left">LAVU OÖ - Etiketten-Druckstudio</div>
             <div class="app-header-right">106 - ASZ Asten</div>
@@ -352,26 +417,43 @@
             </div>
         </div>
 
-        <!-- GEMEINSAME KONFIGURATION -->
-        <div class="form-grid" style="border-top: 1px dashed #e2e8f0; padding-top: 20px;">
-            <div class="form-group">
+        <div class="btn-group">
+            <button class="btn-primary" onclick="window.print()">Jetzt Drucken (STRG + P)</button>
+        </div>
+    </div>
+
+    <!-- FLOATING SETTINGS BUTTON (RECHTS UNTEN) -->
+    <div class="floating-settings-btn" onclick="openSettings()" title="Druck- und Bogeneinstellungen öffnen">
+        <!-- Modernes SVG Zahnrad-Icon -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+    </div>
+
+    <!-- SETTINGS MODAL PAGE -->
+    <div id="settingsModal" class="modal-backdrop" onclick="closeSettingsViaBackdrop(event)">
+        <div class="modal-content">
+            <div class="modal-header">Bogen- & Seiteneinstellungen</div>
+            
+            <div class="form-group" style="margin-bottom: 15px;">
                 <label for="inputTop">Kopfzeile auf Etikett (rechts):</label>
                 <input type="text" id="inputTop" value="106 - ASZ Asten" oninput="updatePreview()">
             </div>
 
-            <div class="form-group">
-                <label for="inputCount">Anzahl Etiketten:</label>
-                <input type="number" id="inputCount" value="9" min="1" max="27" oninput="updatePreview()">
+            <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 0;">
+                <div class="form-group">
+                    <label for="inputCount">Anzahl Etiketten:</label>
+                    <input type="number" id="inputCount" value="9" min="1" max="27" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputStartPos">Start-Position (1-27):</label>
+                    <input type="number" id="inputStartPos" value="1" min="1" max="27" oninput="updatePreview()">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="inputStartPos">Start-Position auf Bogen (1-27):</label>
-                <input type="number" id="inputStartPos" value="1" min="1" max="27" oninput="updatePreview()">
-            </div>
-        </div>
-
-        <div class="btn-group">
-            <button class="btn-primary" onclick="window.print()">Jetzt Drucken (STRG + P)</button>
+            <button class="modal-close-btn" onclick="closeSettings()">Schließen & Ansicht übernehmen</button>
         </div>
     </div>
 
@@ -385,7 +467,6 @@
     </div>
 
     <script>
-        // Erweitertes Sortiment mit zugewiesenen Standard-Behältern/Zusätzen
         const sortimentData = [
             { artNr: "4040", bez: "Elektro-Kleingeräte (ohne Akku)", zusatzMitte: "QR-Box" },
             { artNr: "4010", bez: "Elektro-Großgeräte", zusatzMitte: "Gitterbox" },
@@ -455,6 +536,21 @@
             updatePreview();
         }
 
+        /* Modal Logic Functions */
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function closeSettingsViaBackdrop(event) {
+            if (event.target.id === 'settingsModal') {
+                closeSettings();
+            }
+        }
+
         function updatePreview() {
             const sheet = document.getElementById('labelSheet');
             sheet.innerHTML = '';
@@ -467,7 +563,7 @@
             const count = Math.max(1, parseInt(document.getElementById('inputCount').value) || 1);
             const startPos = Math.max(1, parseInt(document.getElementById('inputStartPos').value) || 1);
 
-            // 1. Übersprungene Etiketten
+            // 1. Übersprungene Etiketten (Bogenanfang freilassen)
             for (let i = 1; i < startPos; i++) {
                 if (sheet.children.length >= 27) break;
                 let emptyCell = document.createElement('div');
@@ -475,7 +571,7 @@
                 sheet.appendChild(emptyCell);
             }
 
-            // 2. Zu druckende Etiketten
+            // 2. Zu druckende Etiketten generieren
             for (let i = 0; i < count; i++) {
                 if (sheet.children.length >= 27) break;
 
@@ -494,7 +590,7 @@
                 sheet.appendChild(label);
             }
 
-            // 3. Den Rest auffüllen
+            // 3. Den Rest auffüllen (Avery 27er Layout-Struktur halten)
             while (sheet.children.length < 27) {
                 let emptyCell = document.createElement('div');
                 emptyCell.className = 'label empty';
